@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zaid — Video Editor</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+</head><body>
+<header id="header"><nav><a class="logo" href="#top">ZAID<span>.</span></a><div class="links"><a href="#work">Work</a><a href="#about">About</a><a href="#services">Services</a><a href="#contact">Contact</a></div></nav></header>
+<main id="top">
+<section class="wrap hero"><div class="reveal"><div class="ey">● VIDEO EDITOR · MOTION DESIGNER</div><h1 id="heroTitle">I TRANSFORM<br><span>IDEAS</span><br>INTO VISUALS</h1><p id="heroBio">Loading portfolio...</p><a class="btn primary" href="#work">View my work ↗</a><a class="btn" href="#contact">Let's talk</a></div><div class="visual reveal"><div class="orb"></div><div class="float f1">50+<br>PROJECTS</div><div class="float f2">Fr · Ae · Resolve</div></div></section>
+<section class="wrap stats reveal" id="stats"></section>
+<section id="work" class="wrap"><div class="ey">01 · Selected work</div><div class="title"><h2>LATEST <span>PROJECTS</span></h2></div><div id="projects" class="grid"></div></section>
+<section id="about" class="wrap"><div class="ey">02 · About me</div><div class="title"><h2>PASSIONATE ABOUT <span>STORYTELLING</span></h2></div><div class="about"><div class="big reveal" id="aboutText"></div><div class="chips"><div class="chip">Premiere Pro</div><div class="chip">After Effects</div><div class="chip">DaVinci Resolve</div><div class="chip">Motion Graphics</div><div class="chip">Sound Design</div><div class="chip">Color</div></div></div></section>
+<section id="services" class="wrap"><div class="ey">03 · Capabilities</div><div class="title"><h2>WHAT <span>I DO</span></h2></div><div id="servicesList" class="services"></div></section>
+<section id="contact" class="wrap"><div class="contact"><div class="ey">04 · Start a project</div><div class="title"><h2>LET'S WORK<br><span>TOGETHER</span></h2></div><form onsubmit="event.preventDefault();alert('Connect your form/email service in production.');"><input placeholder="Your Name"><input type="email" placeholder="Your Email"><textarea placeholder="Tell me about your project"></textarea><button class="btn primary">Send inquiry ↗</button></form></div></section>
+</main><footer class="wrap"><span>© 2026 ZAID</span><span>VIDEO · MOTION · STORY</span></footer>
+<script>
+const fallback={site:{name:"ZAID",role:"Video Editor & Motion Designer",hero:"I TRANSFORM\nIDEAS\nINTO VISUALS",bio:"I create cinematic edits, motion graphics and visual stories designed to make content sharper, stronger and more memorable.",stats:{projects:"25+",clients:"10+",years:"2+",views:"50M+"}},projects:[],services:[]};
+function render(d){
+ const s=d.site||fallback.site; const h=(s.hero||fallback.site.hero).split("\\n");
+ heroTitle.innerHTML=h.map((x,i)=>i===1?'<span>'+x+'</span>':x).join('<br>'); heroBio.textContent=s.bio||"";
+ stats.innerHTML=Object.entries(s.stats||{}).map(([k,v])=>'<div class="stat"><strong>'+v+'</strong><small>'+k+'</small></div>').join('');
+ projects.innerHTML=(d.projects||[]).map(p=>'<article class="project reveal"><div class="thumb"><div class="play">▶</div></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.description||"")+'</p></article>').join('');
+ aboutText.innerHTML=(s.about||"I turn raw footage into <span>clear, engaging stories</span> with pacing, sound design and motion.").replace("clear, engaging stories","<span>clear, engaging stories</span>");
+ servicesList.innerHTML=(d.services||[]).filter(x=>x.visible!==false).map(x=>'<div class="service card"><b>'+esc(x.title)+'</b><br>'+esc(x.description||"")+'</div>').join('');
+ observe();
+}
+function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+async function load(){
+ try{
+  if(!window.ZAID_CONFIG||ZAID_CONFIG.SUPABASE_URL.startsWith("YOUR_")) return render(fallback);
+  const {createClient}=supabase; const db=createClient(ZAID_CONFIG.SUPABASE_URL,ZAID_CONFIG.SUPABASE_ANON_KEY);
+  const {data,error}=await db.from('portfolio_content').select('key,value');
+  if(error) throw error; const out={}; (data||[]).forEach(r=>out[r.key]=r.value); render(out);
+ }catch(e){console.warn(e);render(fallback)}
+}
+let last=scrollY;addEventListener('scroll',()=>{if(scrollY>last+8&&scrollY>120)header.classList.add('hide');if(scrollY<last-8)header.classList.remove('hide');last=scrollY});
+function observe(){new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.1}).observe(document.querySelector('.reveal'));document.querySelectorAll('.reveal').forEach(x=>new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.1}).observe(x))}
+load();
+</script></body></html>
