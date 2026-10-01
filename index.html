@@ -18,7 +18,11 @@
 <script>
 const fallback={site:{name:"ZAID",role:"Video Editor & Motion Designer",hero:"I TRANSFORM\nIDEAS\nINTO VISUALS",bio:"I create cinematic edits, motion graphics and visual stories designed to make content sharper, stronger and more memorable.",stats:{projects:"25+",clients:"10+",years:"2+",views:"50M+"}},projects:[],services:[]};
 function render(d){
- const s=d.site||fallback.site; const h=(s.hero||fallback.site.hero).split("\\n");
+ const s=d.site||fallback.site;
+ siteLogo.innerHTML=esc(s.name||fallback.site.name)+"<span>.</span>";
+siteRole.textContent="● "+(s.role||fallback.site.role).toUpperCase();
+document.title=(s.name||fallback.site.name)+" — "+(s.role||fallback.site.role);
+ const h=(s.hero||fallback.site.hero).split("\\n");
  heroTitle.innerHTML=h.map((x,i)=>i===1?'<span>'+x+'</span>':x).join('<br>'); heroBio.textContent=s.bio||"";
  stats.innerHTML=Object.entries(s.stats||{}).map(([k,v])=>'<div class="stat"><strong>'+v+'</strong><small>'+k+'</small></div>').join('');
  projects.innerHTML=(d.projects||[]).map(p=>'<article class="project reveal"><div class="thumb"><div class="play">▶</div></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.description||"")+'</p></article>').join('');
