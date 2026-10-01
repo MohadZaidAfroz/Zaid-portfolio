@@ -64,16 +64,25 @@ async function saveKey(key,value){
 }
 function loadSite(){let s=content.site||{};name.value=s.name||"ZAID";role.value=s.role||"";hero.value=s.hero||"";bio.value=s.bio||"";projectsStat.value=s.stats?.projects||"";clientsStat.value=s.stats?.clients||"";yearsStat.value=s.stats?.years||"";viewsStat.value=s.stats?.views||""}
 async function saveSite(){
+  const nameEl=document.getElementById('name');
+  const roleEl=document.getElementById('role');
+  const heroEl=document.getElementById('hero');
+  const bioEl=document.getElementById('bio');
+  const projectsEl=document.getElementById('projectsStat');
+  const clientsEl=document.getElementById('clientsStat');
+  const yearsEl=document.getElementById('yearsStat');
+  const viewsEl=document.getElementById('viewsStat');
+
   const value={
-    name:name.value,
-    role:role.value,
-    hero:hero.value,
-    bio:bio.value,
+    name:nameEl.value,
+    role:roleEl.value,
+    hero:heroEl.value,
+    bio:bioEl.value,
     stats:{
-      projects:projectsStat.value,
-      clients:clientsStat.value,
-      years:yearsStat.value,
-      views:viewsStat.value
+      projects:projectsEl.value,
+      clients:clientsEl.value,
+      years:yearsEl.value,
+      views:viewsEl.value
     }
   };
 
