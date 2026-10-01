@@ -24,16 +24,89 @@ function ready(){return window.ZAID_CONFIG&&!ZAID_CONFIG.SUPABASE_URL.startsWith
 async function connect(){if(!ready()){status.textContent="Not configured — add Supabase keys in config.js";dbs.textContent="SETUP";return}db=supabase.createClient(ZAID_CONFIG.SUPABASE_URL,ZAID_CONFIG.SUPABASE_ANON_KEY);const {data,error}=await db.from('portfolio_content').select('key,value');if(error){status.textContent="Database error: "+error.message;dbs.textContent="ERROR";return}(data||[]).forEach(r=>content[r.key]=r.value);status.textContent="Connected to Supabase";dbs.textContent="ONLINE";pc.textContent=(content.projects||[]).length;cc.textContent=content.site?.stats?.clients||"—";loadSite();renderProjects();renderServices()}
 async function signIn(){if(!ready()){loginMsg.textContent="First configure config.js with Supabase URL + anon key.";return}db=supabase.createClient(ZAID_CONFIG.SUPABASE_URL,ZAID_CONFIG.SUPABASE_ANON_KEY);const {error}=await db.auth.signInWithPassword({email:email.value,password:pw.value});if(error){loginMsg.textContent=error.message;return}login.style.display="none";app.style.display="block";connect()}
 async function signOut(){if(db)await db.auth.signOut();app.style.display="none";login.style.display="grid"}
-async function saveKey(key,value){if(!db)return toast("Configure Supabase first");const {error}=await db.from('portfolio_content').upsert({key,value},{onConflict:'key'});toast(error?error.message:'Saved to database')}
+async function saveKey(key,value){
+  if(!db)return toast("Configure Supabase first");
+
+  try{
+    const {data:{session}}=await db.auth.getSession();
+
+    if(!session){
+      toast("Session expired — login again");
+      return false;
+    }
+
+    const {error}=await db
+      .from('portfolio_content')
+      .upsert(
+        {
+          key:key,
+          value:value,
+          updated_at:new Date().toISOString()
+        },
+        {onConflict:'key'}
+      );
+
+    if(error){
+      console.error(error);
+      toast("Save failed: "+error.message);
+      return false;
+    }
+
+    content[key]=value;
+    toast("Saved successfully ✓");
+    return true;
+
+  }catch(e){
+    console.error(e);
+    toast("Save failed: "+e.message);
+    return false;
+  }
+}
 function loadSite(){let s=content.site||{};name.value=s.name||"ZAID";role.value=s.role||"";hero.value=s.hero||"";bio.value=s.bio||"";projectsStat.value=s.stats?.projects||"";clientsStat.value=s.stats?.clients||"";years.value=s.stats?.years||"";viewsStat.value=s.stats?.views||""}
-function saveSite(){saveKey('site',{name:name.value,role:role.value,hero:hero.value,bio:bio.value,stats:{projects:projectsStat.value,clients:clientsStat.value,years:years.value,views:viewsStat.value}})}
+async function saveSite(){
+  const value={
+    name:name.value,
+    role:role.value,
+    hero:hero.value,
+    bio:bio.value,
+    stats:{
+      projects:projectsStat.value,
+      clients:clientsStat.value,
+      years:yearsStat.value,
+      views:viewsStat.value
+    }
+  };
+
+  await saveKey('site',value);
+}
 function renderProjects(){projectList.innerHTML=(content.projects||[]).map((p,i)=>'<div class="project"><div class="thumb">▶</div><div><b>'+esc(p.title)+'</b><div class="muted">'+esc(p.category||"")+' · '+esc(p.description||"")+'</div></div><button class="ghost" onclick="deleteProject('+i+')">Delete</button></div>').join('')}
 function renderServices(){serviceList.innerHTML=(content.services||[]).map((s,i)=>'<div class="card"><div class="field"><label>Title</label><input value="'+esc(s.title)+'"></div><div class="field"><label>Description</label><textarea>'+esc(s.description)+'</textarea></div><label><input type="checkbox" '+(s.visible!==false?'checked':'')+'> Visible</label></div>').join('')}
 function addProject(){let p={id:"p"+Date.now(),title:"New Project",category:"Short Form",description:"New project",software:["Premiere Pro"],featured:false};content.projects=[p,...(content.projects||[])];renderProjects();saveKey('projects',content.projects)}
 function deleteProject(i){content.projects.splice(i,1);renderProjects();saveKey('projects',content.projects)}
 function addService(){content.services=[...(content.services||[]),{id:"s"+Date.now(),title:"New Service",description:"Service description",visible:true}];renderServices();saveKey('services',content.services)}
 function changePassword(){toast("Use Supabase Auth password flow in production")}
-function publish(){toast("Content is published when database rows are saved")}
+async function publish(){
+  toast("Publishing...");
+
+  const site={
+    name:name.value,
+    role:role.value,
+    hero:hero.value,
+    bio:bio.value,
+    stats:{
+      projects:projectsStat.value,
+      clients:clientsStat.value,
+      years:yearsStat.value,
+      views:viewsStat.value
+    }
+  };
+
+  if(!await saveKey('site',site)) return;
+  if(!await saveKey('projects',content.projects||[])) return;
+  if(!await saveKey('services',content.services||[])) return;
+
+  toast("Published successfully ✓");
+}
 function exportJSON(){let b=new Blob([JSON.stringify(content,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='zaid-portfolio-content.json';a.click()}
 function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function toast(x){let t=document.getElementById('toast');t.textContent=x;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
