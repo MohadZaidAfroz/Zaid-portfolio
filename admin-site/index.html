@@ -62,7 +62,7 @@ async function saveKey(key,value){
     return false;
   }
 }
-function loadSite(){let s=content.site||{};name.value=s.name||"ZAID";role.value=s.role||"";hero.value=s.hero||"";bio.value=s.bio||"";projectsStat.value=s.stats?.projects||"";clientsStat.value=s.stats?.clients||"";years.value=s.stats?.years||"";viewsStat.value=s.stats?.views||""}
+function loadSite(){let s=content.site||{};name.value=s.name||"ZAID";role.value=s.role||"";hero.value=s.hero||"";bio.value=s.bio||"";projectsStat.value=s.stats?.projects||"";clientsStat.value=s.stats?.clients||"";yearsStat.value=s.stats?.years||"";viewsStat.value=s.stats?.views||""}
 async function saveSite(){
   const value={
     name:name.value,
