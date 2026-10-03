@@ -931,3 +931,126 @@ function loadSite(){
 
   $("profileName").value=s.name||"ZAID";
   $("profileRole"
+).value=s.role||"VIDEO EDITOR";
+  $("profileHero").value=s.hero||"";
+  $("profileBio").value=s.bio||"";
+  $("statProjects").value=stats.projects||"0";
+  $("statClients").value=stats.clients||"0";
+  $("statYears").value=stats.years||"0";
+  $("statViews").value=stats.views||"0";
+}
+
+function loadAll(){
+  loadSite();
+}
+
+function bind(){
+  $("loginBtn").addEventListener("click",login);
+
+  $("loginPassword").addEventListener("keydown",function(e){
+    if(e.key==="Enter") login();
+  });
+
+  document.querySelectorAll(".nav button").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+      document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+      btn.classList.add("active");
+      const page=document.getElementById(btn.dataset.page);
+      if(page) page.classList.add("active");
+    });
+  });
+
+  $("logoutBtn").addEventListener("click",async function(){
+    await db.auth.signOut();
+    location.reload();
+  });
+
+  $("securityLogout").addEventListener("click",async function(){
+    await db.auth.signOut();
+    location.reload();
+  });
+
+  $("publishBtn").addEventListener("click",function(){
+    toast("Changes are saved to Supabase ✓");
+  });
+
+  document.querySelectorAll(".saveBtn").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      const key=btn.dataset.key;
+
+      if(key==="site"){
+        saveKey("site",getSite());
+      }
+      else if(key==="theme"){
+        saveKey("theme",{
+          bg:$("themeBg").value,
+          accent:$("themeAccent").value,
+          text:$("themeText").value,
+          muted:$("themeMuted").value,
+          radius:$("themeRadius").value,
+          blur:$("themeBlur").value,
+          preset:$("themePreset").value
+        });
+      }
+      else if(key==="typography"){
+        saveKey("typography",{
+          fontFamily:$("fontFamily").value,
+          fontWeight:$("fontWeight").value,
+          letterSpacing:$("letterSpacing").value,
+          lineHeight:$("lineHeight").value,
+          baseFontSize:$("baseFontSize").value
+        });
+      }
+      else if(key==="animations"){
+        saveKey("animations",{
+          type:$("animType").value,
+          duration:$("animDuration").value,
+          delay:$("animDelay").value,
+          stagger:$("animStagger").value,
+          blur:$("animBlur").value
+        });
+      }
+      else if(key==="layout"){
+        saveKey("layout",{
+          containerWidth:$("containerWidth").value,
+          sectionSpacing:$("sectionSpacing").value,
+          mobilePadding:$("mobilePadding").value,
+          headerBehaviour:$("headerBehaviour").value
+        });
+      }
+      else if(key==="sections"){
+        saveKey("sections",{
+          hero:$("showHero").checked,
+          stats:$("showStats").checked,
+          projects:$("showProjects").checked,
+          about:$("showAbout").checked,
+          services:$("showServices").checked,
+          contact:$("showContact").checked
+        });
+      }
+      else if(key==="seo"){
+        saveKey("seo",{
+          title:$("seoTitle").value,
+          description:$("seoDescription").value,
+          keywords:$("seoKeywords").value,
+          instagram:$("instagram").value,
+          youtube:$("youtube").value,
+          linkedin:$("linkedin").value,
+          email:$("contactEmail").value
+        });
+      }
+    });
+  });
+}
+
+window.addEventListener("error",function(e){
+  const m=$("loginMsg");
+  if(m) m.textContent="Error: "+e.message;
+});
+
+bind();
+init();
+</script>
+</body>
+</html>
