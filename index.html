@@ -16,30 +16,414 @@
 <section id="contact" class="wrap"><div class="contact"><div class="ey">04 · Start a project</div><div class="title"><h2>LET'S WORK<br><span>TOGETHER</span></h2></div><form onsubmit="event.preventDefault();alert('Connect your form/email service in production.');"><input placeholder="Your Name"><input type="email" placeholder="Your Email"><textarea placeholder="Tell me about your project"></textarea><button class="btn primary">Send inquiry ↗</button></form></div></section>
 </main><footer class="wrap"><span>© 2026 ZAID</span><span>VIDEO · MOTION · STORY</span></footer>
 <script>
-const fallback={site:{name:"ZAID",role:"Video Editor & Motion Designer",hero:"I TRANSFORM\nIDEAS\nINTO VISUALS",bio:"I create cinematic edits, motion graphics and visual stories designed to make content sharper, stronger and more memorable.",stats:{projects:"25+",clients:"10+",years:"2+",views:"50M+"}},projects:[],services:[]};
+const fallback={
+  site:{
+    name:"ZAID",
+    role:"Video Editor & Motion Designer",
+    hero:"I TRANSFORM\nIDEAS\nINTO VISUALS",
+    bio:"I create cinematic edits, motion graphics and visual stories designed to make content sharper, stronger and more memorable.",
+    stats:{projects:"25+",clients:"10+",years:"2+",views:"50M+"}
+  },
+  projects:[],
+  services:[]
+};
+
+const $=id=>document.getElementById(id);
+
+function esc(x){
+  return String(x??"").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+/* ---------- THEME ---------- */
+
+function applyTheme(t={}){
+  const root=document.documentElement;
+
+  if(t.bg) root.style.setProperty("--cms-bg",t.bg);
+  if(t.accent) root.style.setProperty("--cms-accent",t.accent);
+  if(t.text) root.style.setProperty("--cms-text",t.text);
+  if(t.muted) root.style.setProperty("--cms-muted",t.muted);
+
+  if(t.radius!=null)
+    root.style.setProperty("--cms-radius",t.radius+"px");
+
+  if(t.blur!=null)
+    root.style.setProperty("--cms-blur",t.blur+"px");
+
+  let css=document.getElementById("cmsThemeCSS");
+
+  if(!css){
+    css=document.createElement("style");
+    css.id="cmsThemeCSS";
+    document.head.appendChild(css);
+  }
+
+  css.textContent=`
+    :root{
+      --cms-bg:${t.bg||"#070707"};
+      --cms-accent:${t.accent||"#ff263b"};
+      --cms-text:${t.text||"#f7f4f2"};
+      --cms-muted:${t.muted||"#96908e"};
+      --cms-radius:${t.radius??16}px;
+      --cms-blur:${t.blur??15}px;
+    }
+
+    body{
+      background:var(--cms-bg) !important;
+      color:var(--cms-text) !important;
+    }
+
+    header{
+      background:color-mix(in srgb,var(--cms-bg) 88%,transparent) !important;
+      backdrop-filter:blur(var(--cms-blur)) !important;
+    }
+
+    .logo span,
+    h1 span,
+    h2 span,
+    .ey,
+    .primary{
+      color:var(--cms-accent) !important;
+    }
+
+    .btn.primary{
+      background:var(--cms-accent) !important;
+    }
+
+    .stat,
+    .card,
+    .service{
+      border-radius:var(--cms-radius) !important;
+    }
+
+    .muted,
+    small{
+      color:var(--cms-muted) !important;
+    }
+  `;
+}
+
+/* ---------- TYPOGRAPHY ---------- */
+
+function applyTypography(t={}){
+  let css=document.getElementById("cmsTypographyCSS");
+
+  if(!css){
+    css=document.createElement("style");
+    css.id="cmsTypographyCSS";
+    document.head.appendChild(css);
+  }
+
+  css.textContent=`
+    body{
+      font-family:${JSON.stringify(t.fontFamily||"Inter")},Inter,Arial,sans-serif !important;
+      font-weight:${t.fontWeight||400};
+      letter-spacing:${t.letterSpacing||0}px;
+      line-height:${t.lineHeight||1.4};
+      font-size:${t.baseFontSize||16}px;
+    }
+  `;
+}
+
+/* ---------- ANIMATIONS ---------- */
+
+function applyAnimations(t={}){
+  let css=document.getElementById("cmsAnimationCSS");
+
+  if(!css){
+    css=document.createElement("style");
+    css.id="cmsAnimationCSS";
+    document.head.appendChild(css);
+  }
+
+  const duration=Number(t.duration||700);
+  const delay=Number(t.delay||0);
+  const blur=Number(t.blur||10);
+
+  let transform="translateY(35px)";
+
+  if(t.type==="slide-left") transform="translateX(-50px)";
+  if(t.type==="slide-right") transform="translateX(50px)";
+  if(t.type==="scale") transform="scale(.85)";
+  if(t.type==="zoom") transform="scale(.65)";
+  if(t.type==="fade") transform="none";
+  if(t.type==="fade-blur") transform="translateY(25px)";
+
+  css.textContent=`
+    .reveal{
+      opacity:0;
+      transform:${transform};
+      filter:blur(${t.type==="fade-blur"?blur:0}px);
+      transition:
+        opacity ${duration}ms ease ${delay}ms,
+        transform ${duration}ms ease ${delay}ms,
+        filter ${duration}ms ease ${delay}ms;
+    }
+
+    .reveal.show{
+      opacity:1 !important;
+      transform:none !important;
+      filter:blur(0) !important;
+    }
+  `;
+}
+
+/* ---------- LAYOUT ---------- */
+
+function applyLayout(t={}){
+  let css=document.getElementById("cmsLayoutCSS");
+
+  if(!css){
+    css=document.createElement("style");
+    css.id="cmsLayoutCSS";
+    document.head.appendChild(css);
+  }
+
+  css.textContent=`
+    .wrap{
+      max-width:${t.containerWidth||1400}px !important;
+    }
+
+    main>.wrap,
+    main>section{
+      margin-bottom:${t.sectionSpacing||80}px;
+    }
+
+    @media(max-width:700px){
+      .wrap{
+        padding-left:${t.mobilePadding||20}px !important;
+        padding-right:${t.mobilePadding||20}px !important;
+      }
+    }
+
+    header{
+      position:${t.headerBehaviour==="normal"?"relative":"sticky"} !important;
+    }
+  `;
+}
+
+/* ---------- SECTIONS ---------- */
+
+function applySections(s={}){
+  const map={
+    hero:"top",
+    stats:"stats",
+    projects:"work",
+    about:"about",
+    services:"services",
+    contact:"contact"
+  };
+
+  Object.keys(map).forEach(key=>{
+    const el=$(map[key]);
+    if(el && s[key]!==undefined)
+      el.style.display=s[key]===false?"none":"";
+  });
+}
+
+/* ---------- SEO ---------- */
+
+function applySEO(s={}){
+  if(s.title)
+    document.title=s.title;
+
+  let meta=document.querySelector('meta[name="description"]');
+
+  if(!meta){
+    meta=document.createElement("meta");
+    meta.name="description";
+    document.head.appendChild(meta);
+  }
+
+  if(s.description)
+    meta.content=s.description;
+
+  let keywords=document.querySelector('meta[name="keywords"]');
+
+  if(!keywords){
+    keywords=document.createElement("meta");
+    keywords.name="keywords";
+    document.head.appendChild(keywords);
+  }
+
+  if(s.keywords)
+    keywords.content=s.keywords;
+}
+
+/* ---------- RENDER ---------- */
+
 function render(d){
- const s=d.site||fallback.site;
- siteLogo.innerHTML=esc(s.name||fallback.site.name)+"<span>.</span>";
-siteRole.textContent="● "+(s.role||fallback.site.role).toUpperCase();
-document.title=(s.name||fallback.site.name)+" — "+(s.role||fallback.site.role);
- const h=(s.hero||fallback.site.hero).split("\\n");
- heroTitle.innerHTML=h.map((x,i)=>i===1?'<span>'+x+'</span>':x).join('<br>'); heroBio.textContent=s.bio||"";
- stats.innerHTML=Object.entries(s.stats||{}).map(([k,v])=>'<div class="stat"><strong>'+v+'</strong><small>'+k+'</small></div>').join('');
- projects.innerHTML=(d.projects||[]).map(p=>'<article class="project reveal"><div class="thumb"><div class="play">▶</div></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.description||"")+'</p></article>').join('');
- aboutText.innerHTML=(s.about||"I turn raw footage into <span>clear, engaging stories</span> with pacing, sound design and motion.").replace("clear, engaging stories","<span>clear, engaging stories</span>");
- servicesList.innerHTML=(d.services||[]).filter(x=>x.visible!==false).map(x=>'<div class="service card"><b>'+esc(x.title)+'</b><br>'+esc(x.description||"")+'</div>').join('');
- observe();
+  d=d||{};
+
+  const s=d.site||fallback.site;
+
+  if($("siteLogo"))
+    $("siteLogo").innerHTML=esc(s.name||fallback.site.name)+"<span>.</span>";
+
+  if($("siteRole"))
+    $("siteRole").textContent="● "+(s.role||fallback.site.role).toUpperCase();
+
+  if(s.role)
+    document.title=(s.name||fallback.site.name)+" — "+s.role;
+
+  const hero=(s.hero||fallback.site.hero)
+    .replace(/\\n/g,"\n")
+    .split(/\n/);
+
+  if($("heroTitle")){
+    $("heroTitle").innerHTML=hero.map((x,i)=>
+      i===1 ? "<span>"+esc(x)+"</span>" : esc(x)
+    ).join("<br>");
+  }
+
+  if($("heroBio"))
+    $("heroBio").textContent=s.bio||"";
+
+  if($("stats")){
+    const stats=s.stats||{};
+    $("stats").innerHTML=Object.entries(stats)
+      .map(([k,v])=>
+        '<div class="stat reveal">'+
+        '<strong>'+esc(v)+'</strong>'+
+        '<small>'+esc(k)+'</small>'+
+        '</div>'
+      ).join("");
+  }
+
+  if($("projects")){
+    $("projects").innerHTML=(d.projects||[])
+      .filter(p=>p.visible!==false)
+      .map(p=>
+        '<article class="project reveal">'+
+        '<div class="thumb">'+
+        (p.image?
+          '<img src="'+esc(p.image)+'" alt="'+esc(p.title||"Project")+'">':
+          '<div class="play">▶</div>')+
+        '</div>'+
+        '<h3>'+esc(p.title||"Untitled Project")+'</h3>'+
+        '<p>'+esc(p.description||"")+'</p>'+
+        '</article>'
+      ).join("");
+  }
+
+  if($("aboutText")){
+    const about=s.about||
+      "I turn raw footage into clear, engaging stories with pacing, sound design and motion.";
+
+    $("aboutText").textContent=about;
+  }
+
+  if($("servicesList")){
+    $("servicesList").innerHTML=(d.services||[])
+      .filter(x=>x.visible!==false)
+      .map(x=>
+        '<div class="service card reveal">'+
+        '<b>'+esc(x.title||"Service")+'</b><br>'+
+        esc(x.description||"")+
+        '</div>'
+      ).join("");
+  }
+
+  applyTheme(d.theme||{});
+  applyTypography(d.typography||{});
+  applyAnimations(d.animations||{});
+  applyLayout(d.layout||{});
+  applySections(d.sections||{});
+  applySEO(d.seo||{});
+
+  setupReveal();
 }
-function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+/* ---------- REVEAL ---------- */
+
+function setupReveal(){
+  const items=document.querySelectorAll(".reveal");
+
+  if(!("IntersectionObserver" in window)){
+    items.forEach(x=>x.classList.add("show"));
+    return;
+  }
+
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:.1});
+
+  items.forEach(x=>{
+    x.classList.remove("show");
+    observer.observe(x);
+  });
+}
+
+/* ---------- HEADER ---------- */
+
+let lastScroll=window.scrollY;
+
+window.addEventListener("scroll",()=>{
+  const header=$("header");
+  if(!header)return;
+
+  if(window.scrollY>lastScroll+8 && window.scrollY>120){
+    header.classList.add("hide");
+  }
+
+  if(window.scrollY<lastScroll-8){
+    header.classList.remove("hide");
+  }
+
+  lastScroll=window.scrollY;
+});
+
+/* ---------- DATABASE ---------- */
+
 async function load(){
- try{
-  if(!window.ZAID_CONFIG||ZAID_CONFIG.SUPABASE_URL.startsWith("YOUR_")) return render(fallback);
-  const {createClient}=supabase; const db=createClient(ZAID_CONFIG.SUPABASE_URL,ZAID_CONFIG.SUPABASE_ANON_KEY);
-  const {data,error}=await db.from('portfolio_content').select('key,value');
-  if(error) throw error; const out={}; (data||[]).forEach(r=>out[r.key]=r.value); render(out);
- }catch(e){console.warn(e);render(fallback)}
+  try{
+    if(
+      !window.ZAID_CONFIG ||
+      !ZAID_CONFIG.SUPABASE_URL ||
+      !ZAID_CONFIG.SUPABASE_ANON_KEY
+    ){
+      render(fallback);
+      return;
+    }
+
+    if(!window.supabase){
+      render(fallback);
+      return;
+    }
+
+    const db=window.supabase.createClient(
+      ZAID_CONFIG.SUPABASE_URL,
+      ZAID_CONFIG.SUPABASE_ANON_KEY
+    );
+
+    const {data,error}=await db
+      .from("portfolio_content")
+      .select("key,value");
+
+    if(error)throw error;
+
+    const out={};
+
+    (data||[]).forEach(row=>{
+      out[row.key]=row.value;
+    });
+
+    render(out);
+
+  }catch(error){
+    console.error("Portfolio load error:",error);
+    render(fallback);
+  }
 }
-let last=scrollY;addEventListener('scroll',()=>{if(scrollY>last+8&&scrollY>120)header.classList.add('hide');if(scrollY<last-8)header.classList.remove('hide');last=scrollY});
-function observe(){new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.1}).observe(document.querySelector('.reveal'));document.querySelectorAll('.reveal').forEach(x=>new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.1}).observe(x))}
+
 load();
-</script></body></html>
+     </script> 
+ </body>
+</html>
