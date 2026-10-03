@@ -1,125 +1,933 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zaid Admin CMS V6</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script></head><body>
-<div id="login" class="login"><div class="box"><div class="mono">ZAID / ADMIN CMS V6</div><h1>Control your portfolio.</h1><p class="muted">Separate admin website. V6 adds the database connection layer. Configure Supabase before using real publishing.</p><input id="email" class="input" type="email" placeholder="Admin email"><input id="pw" class="input" type="password" placeholder="Admin password"><button class="primary full" onclick="signIn()">Sign in</button><p id="loginMsg" class="muted"></p></div></div>
-<div id="app" class="app"><header class="top shell"><div><div class="brand">ZAID<span>.</span> ADMIN</div><div class="mono">DATABASE CMS · V6</div></div><button class="ghost" onclick="signOut()">Log out</button></header><div class="shell layout"><nav class="side" id="nav">
-<button class="active" data-p="dashboard">Dashboard</button><button data-p="profile">Profile & Hero</button><button data-p="projects">Projects</button><button data-p="services">Services</button><button data-p="theme">Theme</button><button data-p="type">Typography</button><button data-p="anim">Animations</button><button data-p="layout">Layout & Responsive</button><button data-p="sections">Sections</button><button data-p="seo">Social & SEO</button><button data-p="security">Security</button><button data-p="backup">Backup & Reset</button>
-</nav><main>
-<section class="page active" id="dashboard"><div class="head"><div><div class="mono">DASHBOARD</div><h2>Portfolio database</h2><p class="muted" id="status">Checking connection…</p></div><button class="save" onclick="publish()">Save & Publish</button></div><div class="notice">V6 is wired for Supabase. Real admin writes should be protected with Supabase Auth plus a server-side/RPC write policy; the public site only needs read access.</div><div class="grid3"><div class="card"><div class="mono">PROJECTS</div><h2 id="pc">—</h2></div><div class="card"><div class="mono">CLIENTS</div><h2 id="cc">—</h2></div><div class="card"><div class="mono">DATABASE</div><h2 id="dbs">—</h2></div></div></section>
-<section class="page" id="profile"><div class="head"><div><div class="mono">CONTENT</div><h2>Profile & Hero</h2></div><button class="save" onclick="saveSite()">Save</button></div><div class="grid"><div class="card"><div class="field"><label>Name</label><input id="name" value="ZAID"></div><div class="field"><label>Role</label><input id="role" value="Video Editor & Motion Designer"></div><div class="field"><label>Hero headline</label><textarea id="hero">I TRANSFORM
-IDEAS
-INTO VISUALS</textarea></div><div class="field"><label>Bio</label><textarea id="bio"></textarea></div></div><div class="card"><div class="field"><label>Profile picture</label><input type="file" accept="image/*"></div><div class="field"><label>Hero image/video</label><input type="file" accept="image/*,video/*"></div><div class="field"><label>Projects</label><input id="projectsStat" value="25+"></div><div class="field"><label>Clients</label><input id="clientsStat" value="10+"></div><div class="field"><label>Years</label><input id="yearsStat" value="2+"></div><div class="field"><label>Views</label><input id="viewsStat" value="50M+"></div></div></div></section>
-<section class="page" id="projects"><div class="head"><div><div class="mono">CONTENT MANAGER</div><h2>Projects</h2></div><button class="save" onclick="addProject()">+ Add Project</button></div><div id="projectList"></div></section>
-<section class="page" id="services"><div class="head"><div><div class="mono">CONTENT</div><h2>Services</h2></div><button class="save" onclick="addService()">+ Add Service</button></div><div id="serviceList" class="grid"></div></section>
-<section class="page" id="theme"><div class="head"><div><div class="mono">DESIGN SYSTEM</div><h2>Theme</h2></div></div><div class="grid"><div class="card"><div class="field"><label>Background</label><input type="color" value="#070707"></div><div class="field"><label>Accent</label><input type="color" value="#ff263b"></div><div class="field"><label>Text</label><input type="color" value="#f7f4f2"></div><div class="field"><label>Muted</label><input type="color" value="#96908e"></div></div><div class="card"><div class="field"><label>Radius</label><input type="range" min="0" max="40" value="18"></div><div class="field"><label>Blur</label><input type="range" min="0" max="40" value="20"></div><div class="field"><label>Glow</label><input type="range" min="0" max="100" value="30"></div><div class="field"><label>Preset</label><select><option>Cinematic Red</option><option>Monochrome</option><option>Custom</option></select></div></div></div></section>
-<section class="page" id="type"><div class="head"><div><div class="mono">TYPOGRAPHY</div><h2>Fonts & Type</h2></div></div><div class="grid"><div class="card"><div class="field"><label>Primary font</label><select><option>Inter</option><option>Manrope</option><option>Plus Jakarta Sans</option><option>DM Sans</option><option>Space Grotesk</option></select></div><div class="field"><label>Heading font</label><select><option>Space Grotesk</option><option>Inter</option><option>Manrope</option></select></div></div><div class="card"><div class="field"><label>Heading size</label><input type="range" min="30" max="110" value="80"></div><div class="field"><label>Body size</label><input type="range" min="10" max="24" value="14"></div><div class="field"><label>Weight</label><input type="range" min="300" max="900" value="800"></div><div class="field"><label>Letter spacing</label><input type="range" min="-10" max="5" value="-6"></div><div class="field"><label>Line height</label><input type="range" min="70" max="160" value="90"></div></div></div></section>
-<section class="page" id="anim"><div class="head"><div><div class="mono">MOTION SYSTEM</div><h2>Animations</h2></div></div><div class="grid"><div class="card"><div class="field"><label>Type</label><select><option>Fade + Blur</option><option>Fade</option><option>Slide Up</option><option>Slide Left</option><option>Scale</option><option>Zoom</option><option>Blur → Clear</option></select></div><div class="field"><label>Duration</label><input type="range" min="100" max="2000" value="800"></div><div class="field"><label>Delay</label><input type="range" min="0" max="1000"></div><div class="field"><label>Distance</label><input type="range" min="0" max="100" value="32"></div><div class="field"><label>Blur</label><input type="range" min="0" max="30" value="7"></div></div><div class="card"><div class="field"><label>Opacity</label><input type="range" min="0" max="100"></div><div class="field"><label>Scale</label><input type="range" min="80" max="120" value="100"></div><div class="field"><label>Rotation</label><input type="range" min="-30" max="30"></div><div class="field"><label>Easing</label><select><option>Ease Out</option><option>Ease In Out</option><option>Linear</option></select></div><div class="field"><label>Stagger</label><input type="range" min="0" max="500" value="80"></div><label><input type="checkbox" checked> Scroll reveal</label><div class="field"><label>Header</label><select><option>Sticky + blur + hide/show</option><option>Sticky + blur</option><option>Static</option></select></div></div></div></section>
-<section class="page" id="layout"><div class="head"><div><div class="mono">LAYOUT</div><h2>Layout & Responsive</h2></div></div><div class="grid"><div class="card"><div class="field"><label>Max width</label><input value="1120px"></div><div class="field"><label>Section padding</label><input value="80px"></div><div class="field"><label>Grid gap</label><input value="12px"></div></div><div class="card"><div class="field"><label>Desktop</label><input value="1120px"></div><div class="field"><label>Tablet</label><input value="768px"></div><div class="field"><label>Mobile</label><input value="480px"></div></div></div></section>
-<section class="page" id="sections"><div class="head"><div><div class="mono">PAGE BUILDER</div><h2>Sections</h2></div></div><div id="sectionList"></div></section>
-<section class="page" id="seo"><div class="head"><div><div class="mono">DISCOVERY</div><h2>Social & SEO</h2></div></div><div class="grid"><div class="card"><div class="field"><label>Instagram</label><input placeholder="https://instagram.com/..."></div><div class="field"><label>YouTube</label><input placeholder="https://youtube.com/..."></div><div class="field"><label>LinkedIn</label><input placeholder="https://linkedin.com/..."></div><div class="field"><label>Email</label><input type="email"></div></div><div class="card"><div class="field"><label>SEO title</label><input value="Zaid — Video Editor & Motion Designer"></div><div class="field"><label>SEO description</label><textarea>Creative video editing, motion graphics and visual storytelling.</textarea></div></div></div></section>
-<section class="page" id="security"><div class="head"><div><div class="mono">SECURITY</div><h2>Security</h2></div></div><div class="notice">Production security uses Supabase Auth. Do not use client-side password storage. Create your admin user in Supabase Auth.</div><div class="grid"><div class="card"><div class="field"><label>New password</label><input type="password"></div><div class="field"><label>Confirm password</label><input type="password"></div><button class="save" onclick="changePassword()">Change password</button></div><div class="card"><div class="field"><label>Session timeout</label><select><option>30 minutes</option><option>1 hour</option><option>4 hours</option></select></div><button class="ghost" onclick="signOut()">Log out current session</button></div></div></section>
-<section class="page" id="backup"><div class="head"><div><div class="mono">DATA SAFETY</div><h2>Backup & Reset</h2></div></div><div class="grid"><div class="card"><h3>Backup</h3><p class="muted">Export the loaded content as JSON.</p><button class="save" onclick="exportJSON()">Export JSON</button></div><div class="card"><h3>Reset</h3><button class="ghost" onclick="toast('Reset section requires backend policy')">Reset Section</button> <button class="ghost" onclick="toast('Reset theme requires backend policy')">Reset Theme</button></div></div></section>
-</main></div></div><div id="toast" class="toast"></div>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZAID — Portfolio Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../config.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#070707;
+  color:#f7f4f2;
+  font-family:Inter,Arial,sans-serif;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.login{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+.loginbox,.panel,.card{
+  background:#111;
+  border:1px solid #292929;
+  border-radius:16px;
+}
+.loginbox{
+  width:min(420px,100%);
+  padding:28px;
+}
+h1,h2,h3{margin-top:0}
+.muted{color:#96908e}
+.field{margin:14px 0}
+label{
+  display:block;
+  margin-bottom:7px;
+  color:#aaa;
+  font-size:13px;
+}
+input,textarea,select{
+  width:100%;
+  padding:12px;
+  color:#fff;
+  background:#0a0a0a;
+  border:1px solid #303030;
+  border-radius:10px;
+  outline:none;
+}
+textarea{min-height:110px;resize:vertical}
+input:focus,textarea:focus,select:focus{
+  border-color:#ff263b;
+}
+.btn{
+  border:0;
+  padding:11px 16px;
+  border-radius:10px;
+  color:#fff;
+  background:#ff263b;
+  font-weight:700;
+}
+.btn.dark{
+  background:#1b1b1b;
+  border:1px solid #333;
+}
+.btn.green{background:#16864a}
+.btn.red{background:#a71929}
+.app{display:none;min-height:100vh}
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(7,7,7,.94);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid #222;
+  padding:14px;
+}
+.top{
+  max-width:1400px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  overflow:auto;
+}
+.brand{
+  font-size:20px;
+  font-weight:900;
+  margin-right:15px;
+}
+.nav{
+  display:flex;
+  gap:7px;
+}
+.nav button{
+  white-space:nowrap;
+  background:#101010;
+  color:#aaa;
+  border:1px solid #292929;
+  padding:9px 12px;
+  border-radius:9px;
+}
+.nav button.active{
+  background:#ff263b;
+  color:#fff;
+  border-color:#ff263b;
+}
+main{
+  max-width:1400px;
+  margin:auto;
+  padding:25px 16px 70px;
+}
+.page{display:none}
+.page.active{display:block}
+.title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+.card{
+  padding:18px;
+}
+.full{grid-column:1/-1}
+.statgrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.stat{
+  padding:18px;
+  background:#111;
+  border:1px solid #292929;
+  border-radius:14px;
+}
+.stat b{
+  display:block;
+  font-size:25px;
+  margin-top:5px;
+}
+.row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.check{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.check input{width:auto}
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99;
+  background:#171717;
+  border:1px solid #333;
+  padding:13px 17px;
+  border-radius:10px;
+  opacity:0;
+  transform:translateY(15px);
+  pointer-events:none;
+  transition:.2s;
+}
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.status{
+  padding:10px 13px;
+  border-radius:9px;
+  background:#111;
+  border:1px solid #292929;
+  color:#aaa;
+}
+.project,.service{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid #252525;
+}
+.project:last-child,.service:last-child{border-bottom:0}
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#201014;
+  color:#ff6976;
+  font-size:11px;
+}
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr}
+  .statgrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:500px){
+  .title{align-items:flex-start;flex-direction:column}
+  .statgrid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="login">
+  <div class="loginbox">
+    <h1>ZAID<span style="color:#ff263b">.</span></h1>
+    <p class="muted">Portfolio Admin Panel</p>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="loginEmail" type="email" placeholder="Admin email">
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input id="loginPassword" type="password" placeholder="Password">
+    </div>
+
+    <button class="btn" id="loginBtn">Login</button>
+
+    <p id="loginMsg" class="muted"></p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app">
+
+<header>
+  <div class="top">
+    <div class="brand">ZAID ADMIN</div>
+
+    <div class="nav">
+      <button data-page="dashboard" class="active">Dashboard</button>
+      <button data-page="profile">Profile</button>
+      <button data-page="projects">Projects</button>
+      <button data-page="services">Services</button>
+      <button data-page="theme">Theme</button>
+      <button data-page="type">Typography</button>
+      <button data-page="anim">Animations</button>
+      <button data-page="layout">Layout</button>
+      <button data-page="sections">Sections</button>
+      <button data-page="seo">SEO</button>
+      <button data-page="security">Security</button>
+      <button data-page="backup">Backup</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+  <div class="title">
+    <div>
+      <h2>Dashboard</h2>
+      <p class="muted">Control your complete portfolio.</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn green" id="publishBtn">Save & Publish</button>
+      <button class="btn dark" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+
+  <div class="statgrid">
+    <div class="stat">
+      <span class="muted">Database</span>
+      <b id="dbStatus">...</b>
+    </div>
+
+    <div class="stat">
+      <span class="muted">Projects</span>
+      <b id="projectCount">0</b>
+    </div>
+
+    <div class="stat">
+      <span class="muted">Clients</span>
+      <b id="clientCount">—</b>
+    </div>
+
+    <div class="stat">
+      <span class="muted">Admin</span>
+      <b>ONLINE</b>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="page" id="profile">
+  <div class="title">
+    <div>
+      <h2>Profile / Hero</h2>
+      <p class="muted">Edit your main portfolio information.</p>
+    </div>
+    <button class="btn saveBtn" data-key="site">Save</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label>Name</label>
+        <input id="profileName">
+      </div>
+
+      <div class="field">
+        <label>Role</label>
+        <input id="profileRole">
+      </div>
+
+      <div class="field">
+        <label>Hero Text</label>
+        <textarea id="profileHero"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Bio</label>
+        <textarea id="profileBio"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Stats</h3>
+
+      <div class="field">
+        <label>Projects</label>
+        <input id="statProjects">
+      </div>
+
+      <div class="field">
+        <label>Clients</label>
+        <input id="statClients">
+      </div>
+
+      <div class="field">
+        <label>Years</label>
+        <input id="statYears">
+      </div>
+
+      <div class="field">
+        <label>Views</label>
+        <input id="statViews">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="page" id="projects">
+  <div class="title">
+    <div>
+      <h2>Projects</h2>
+      <p class="muted">Manage portfolio projects.</p>
+    </div>
+
+    <button class="btn" id="addProjectBtn">+ Add Project</button>
+  </div>
+
+  <div class="card" id="projectList"></div>
+</section>
+
+<!-- SERVICES -->
+<section class="page" id="services">
+  <div class="title">
+    <div>
+      <h2>Services</h2>
+      <p class="muted">Manage your services.</p>
+    </div>
+
+    <button class="btn" id="addServiceBtn">+ Add Service</button>
+  </div>
+
+  <div class="card" id="serviceList"></div>
+
+  <br>
+  <button class="btn" id="saveServicesBtn">Save Services</button>
+</section>
+
+<!-- THEME -->
+<section class="page" id="theme">
+  <div class="title">
+    <div>
+      <h2>Theme</h2>
+      <p class="muted">Control colors, radius and visual style.</p>
+    </div>
+
+    <button class="btn saveBtn" data-key="theme">Save Theme</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label>Background</label>
+        <input id="themeBg" type="color" value="#070707">
+      </div>
+
+      <div class="field">
+        <label>Accent</label>
+        <input id="themeAccent" type="color" value="#ff263b">
+      </div>
+
+      <div class="field">
+        <label>Text</label>
+        <input id="themeText" type="color" value="#f7f4f2">
+      </div>
+
+      <div class="field">
+        <label>Muted Text</label>
+        <input id="themeMuted" type="color" value="#96908e">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Card Radius</label>
+        <input id="themeRadius" type="range" min="0" max="40" value="16">
+      </div>
+
+      <div class="field">
+        <label>Blur</label>
+        <input id="themeBlur" type="range" min="0" max="30" value="15">
+      </div>
+
+      <div class="field">
+        <label>Theme Preset</label>
+        <select id="themePreset">
+          <option value="cinematic-red">Cinematic Red</option>
+          <option value="midnight-blue">Midnight Blue</option>
+          <option value="pure-black">Pure Black</option>
+          <option value="minimal-white">Minimal White</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section class="page" id="type">
+  <div class="title">
+    <div>
+      <h2>Typography</h2>
+      <p class="muted">Control website typography.</p>
+    </div>
+
+    <button class="btn saveBtn" data-key="typography">Save Typography</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label>Font Family</label>
+        <select id="fontFamily">
+          <option>Inter</option>
+          <option>Manrope</option>
+          <option>Plus Jakarta Sans</option>
+          <option>DM Sans</option>
+          <option>Space Grotesk</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Font Weight</label>
+        <select id="fontWeight">
+          <option value="400">400 — Regular</option>
+          <option value="500">500 — Medium</option>
+          <option value="600">600 — Semibold</option>
+          <option value="700">700 — Bold</option>
+          <option value="800">800 — Extra Bold</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Letter Spacing</label>
+        <input id="letterSpacing" type="range" min="-2" max="5" step=".1" value="0">
+      </div>
+
+      <div class="field">
+        <label>Line Height</label>
+        <input id="lineHeight" type="range" min="1" max="2" step=".05" value="1.4">
+      </div>
+
+      <div class="field">
+        <label>Base Font Size</label>
+        <input id="baseFontSize" type="range" min="12" max="24" value="16">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANIMATIONS -->
+<section class="page" id="anim">
+  <div class="title">
+    <div>
+      <h2>Animations</h2>
+      <p class="muted">Control scroll and entrance animations.</p>
+    </div>
+
+    <button class="btn saveBtn" data-key="animations">Save Animations</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label>Animation Type</label>
+        <select id="animType">
+          <option value="fade-blur">Fade + Blur</option>
+          <option value="fade">Fade</option>
+          <option value="slide-up">Slide Up</option>
+          <option value="slide-left">Slide Left</option>
+          <option value="slide-right">Slide Right</option>
+          <option value="scale">Scale</option>
+          <option value="zoom">Zoom</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Duration (ms)</label>
+        <input id="animDuration" type="range" min="100" max="2000" step="50" value="700">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Delay (ms)</label>
+        <input id="animDelay" type="range" min="0" max="1000" step="50" value="0">
+      </div>
+
+      <div class="field">
+        <label>Stagger (ms)</label>
+        <input id="animStagger" type="range" min="0" max="500" step="25" value="75">
+      </div>
+
+      <div class="field">
+        <label>Blur Amount</label>
+        <input id="animBlur" type="range" min="0" max="30" value="10">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYOUT -->
+<section class="page" id="layout">
+  <div class="title">
+    <div>
+      <h2>Layout</h2>
+      <p class="muted">Control spacing and responsive layout.</p>
+    </div>
+
+    <button class="btn saveBtn" data-key="layout">Save Layout</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label>Container Width</label>
+        <input id="containerWidth" type="range" min="900" max="1800" value="1400">
+      </div>
+
+      <div class="field">
+        <label>Section Spacing</label>
+        <input id="sectionSpacing" type="range" min="20" max="200" value="80">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Mobile Padding</label>
+        <input id="mobilePadding" type="range" min="10" max="50" value="20">
+      </div>
+
+      <div class="field">
+        <label>Header Behaviour</label>
+        <select id="headerBehaviour">
+          <option value="sticky">Sticky</option>
+          <option value="normal">Normal</option>
+          <option value="hide-scroll">Hide on Scroll</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTIONS -->
+<section class="page" id="sections">
+  <div class="title">
+    <div>
+      <h2>Sections</h2>
+      <p class="muted">Show or hide website sections.</p>
+    </div>
+
+    <button class="btn saveBtn" data-key="sections">Save Sections</button>
+  </div>
+
+  <div class="card">
+    <label class="check">
+      <input id="showHero" type="checkbox" checked>
+      Hero
+    </label>
+
+    <br>
+
+    <label class="check">
+      <input id="showStats" type="checkbox" checked>
+      Stats
+    </label>
+
+    <br>
+
+    <label class="check">
+      <input id="showProjects" type="checkbox" checked>
+      Projects
+    </label>
+
+    <br>
+
+    <label class="check">
+      <input id="showAbout" type="checkbox" checked>
+      About
+    </label>
+
+    <br>
+
+    <label class="check">
+      <input id="showServices" type="checkbox" checked>
+      Services
+    </label>
+
+    <br>
+
+    <label class="check">
+      <input id="showContact" type="checkbox" checked>
+      Contact
+    </label>
+  </div>
+</section>
+
+<!-- SEO -->
+<section class="page" id="seo">
+  <div class="title">
+    <div>
+      <h2>SEO & Social</h2>
+      <p class="muted">Website title, description and social links.</p>
+    </div>
+
+    <button class="btn saveBtn" data-key="seo">Save SEO</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label>SEO Title</label>
+        <input id="seoTitle">
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea id="seoDescription"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Keywords</label>
+        <input id="seoKeywords">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Instagram</label>
+        <input id="instagram">
+      </div>
+
+      <div class="field">
+        <label>YouTube</label>
+        <input id="youtube">
+      </div>
+
+      <div class="field">
+        <label>LinkedIn</label>
+        <input id="linkedin">
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="contactEmail">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="page" id="security">
+  <div class="title">
+    <div>
+      <h2>Security</h2>
+      <p class="muted">Supabase handles authentication.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <p>Logged in as:</p>
+    <b id="loggedEmail">—</b>
+    <br><br>
+    <button class="btn dark" id="securityLogout">Logout</button>
+  </div>
+</section>
+
+<!-- BACKUP -->
+<section class="page" id="backup">
+  <div class="title">
+    <div>
+      <h2>Backup</h2>
+      <p class="muted">Export your current portfolio data.</p>
+    </div>
+
+    <button class="btn" id="exportBtn">Export JSON</button>
+  </div>
+
+  <div class="card">
+    <p class="muted">
+      Export creates a backup of the current data loaded from Supabase.
+    </p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<div id="toast" class="toast"></div>
+
 <script>
-let db=null,content={site:{},projects:[],services:[]};
-function ready(){return window.ZAID_CONFIG&&!ZAID_CONFIG.SUPABASE_URL.startsWith("YOUR_")}
-async function connect(){if(!ready()){status.textContent="Not configured — add Supabase keys in config.js";dbs.textContent="SETUP";return}db=supabase.createClient(ZAID_CONFIG.SUPABASE_URL,ZAID_CONFIG.SUPABASE_ANON_KEY);const {data,error}=await db.from('portfolio_content').select('key,value');if(error){status.textContent="Database error: "+error.message;dbs.textContent="ERROR";return}(data||[]).forEach(r=>content[r.key]=r.value);status.textContent="Connected to Supabase";dbs.textContent="ONLINE";pc.textContent=(content.projects||[]).length;cc.textContent=content.site?.stats?.clients||"—";loadSite();renderProjects();renderServices()}
-async function signIn(){if(!ready()){loginMsg.textContent="First configure config.js with Supabase URL + anon key.";return}db=supabase.createClient(ZAID_CONFIG.SUPABASE_URL,ZAID_CONFIG.SUPABASE_ANON_KEY);const {error}=await db.auth.signInWithPassword({email:email.value,password:pw.value});if(error){loginMsg.textContent=error.message;return}login.style.display="none";app.style.display="block";connect()}
-async function signOut(){if(db)await db.auth.signOut();app.style.display="none";login.style.display="grid"}
-async function saveKey(key,value){
-  if(!db)return toast("Configure Supabase first");
+let db=null;
 
-  try{
-    const {data:{session}}=await db.auth.getSession();
+let content={
+  site:{},
+  projects:[],
+  services:[],
+  theme:{},
+  typography:{},
+  animations:{},
+  layout:{},
+  sections:{},
+  seo:{}
+};
 
-    if(!session){
-      toast("Session expired — login again");
-      return false;
-    }
+const $=id=>document.getElementById(id);
 
-    const {error}=await db
-      .from('portfolio_content')
-      .upsert(
-        {
-          key:key,
-          value:value,
-          updated_at:new Date().toISOString()
-        },
-        {onConflict:'key'}
-      );
+function toast(message){
+  const t=$("toast");
+  t.textContent=message;
+  t.classList.add("show");
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+}
 
-    if(error){
-      console.error(error);
-      toast("Save failed: "+error.message);
-      return false;
-    }
+function ready(){
+  return window.ZAID_CONFIG &&
+    ZAID_CONFIG.SUPABASE_URL &&
+    ZAID_CONFIG.SUPABASE_ANON_KEY &&
+    !ZAID_CONFIG.SUPABASE_URL.startsWith("YOUR_");
+}
 
-    content[key]=value;
-    toast("Saved successfully ✓");
-    return true;
+async function init(){
+  if(!ready()){
+    $("loginMsg").textContent="Supabase config not found.";
+    return;
+  }
 
-  }catch(e){
-    console.error(e);
-    toast("Save failed: "+e.message);
-    return false;
+  db=supabase.createClient(
+    ZAID_CONFIG.SUPABASE_URL,
+    ZAID_CONFIG.SUPABASE_ANON_KEY
+  );
+
+  const {data:{session}}=await db.auth.getSession();
+
+  if(session){
+    showApp(session);
   }
 }
-function loadSite(){let s=content.site||{};name.value=s.name||"ZAID";role.value=s.role||"";hero.value=s.hero||"";bio.value=s.bio||"";projectsStat.value=s.stats?.projects||"";clientsStat.value=s.stats?.clients||"";yearsStat.value=s.stats?.years||"";viewsStat.value=s.stats?.views||""}
-async function saveSite(){
-  const nameEl=document.getElementById('name');
-  const roleEl=document.getElementById('role');
-  const heroEl=document.getElementById('hero');
-  const bioEl=document.getElementById('bio');
-  const projectsEl=document.getElementById('projectsStat');
-  const clientsEl=document.getElementById('clientsStat');
-  const yearsEl=document.getElementById('yearsStat');
-  const viewsEl=document.getElementById('viewsStat');
 
-  const value={
-    name:nameEl.value,
-    role:roleEl.value,
-    hero:heroEl.value,
-    bio:bioEl.value,
-    stats:{
-      projects:projectsEl.value,
-      clients:clientsEl.value,
-      years:yearsEl.value,
-      views:viewsEl.value
-    }
+function showApp(session){
+  $("login").style.display="none";
+  $("app").style.display="block";
+  $("loggedEmail").textContent=session.user.email||"Admin";
+  connect();
+}
+
+async function login(){
+  if(!ready()){
+    $("loginMsg").textContent="Supabase configuration missing.";
+    return;
+  }
+
+  if(!db){
+    db=supabase.createClient(
+      ZAID_CONFIG.SUPABASE_URL,
+      ZAID_CONFIG.SUPABASE_ANON_KEY
+    );
+  }
+
+  const email=$("loginEmail").value.trim();
+  const password=$("loginPassword").value;
+
+  $("loginMsg").textContent="Logging in...";
+
+  const {data,error}=await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    $("loginMsg").textContent=error.message;
+    return;
+  }
+
+  showApp(data.session);
+}
+
+async function connect(){
+  if(!db)return;
+
+  $("dbStatus").textContent="CONNECTING";
+
+  const {data,error}=await db
+    .from("portfolio_content")
+    .select("key,value");
+
+  if(error){
+    console.error(error);
+    $("dbStatus").textContent="ERROR";
+    toast("Database error: "+error.message);
+    return;
+  }
+
+  content={
+    site:{},
+    projects:[],
+    services:[],
+    theme:{},
+    typography:{},
+    animations:{},
+    layout:{},
+    sections:{},
+    seo:{}
   };
 
-  await saveKey('site',value);
-}
-function renderProjects(){projectList.innerHTML=(content.projects||[]).map((p,i)=>'<div class="project"><div class="thumb">▶</div><div><b>'+esc(p.title)+'</b><div class="muted">'+esc(p.category||"")+' · '+esc(p.description||"")+'</div></div><button class="ghost" onclick="deleteProject('+i+')">Delete</button></div>').join('')}
-function renderServices(){serviceList.innerHTML=(content.services||[]).map((s,i)=>'<div class="card"><div class="field"><label>Title</label><input value="'+esc(s.title)+'"></div><div class="field"><label>Description</label><textarea>'+esc(s.description)+'</textarea></div><label><input type="checkbox" '+(s.visible!==false?'checked':'')+'> Visible</label></div>').join('')}
-function addProject(){let p={id:"p"+Date.now(),title:"New Project",category:"Short Form",description:"New project",software:["Premiere Pro"],featured:false};content.projects=[p,...(content.projects||[])];renderProjects();saveKey('projects',content.projects)}
-function deleteProject(i){content.projects.splice(i,1);renderProjects();saveKey('projects',content.projects)}
-function addService(){content.services=[...(content.services||[]),{id:"s"+Date.now(),title:"New Service",description:"Service description",visible:true}];renderServices();saveKey('services',content.services)}
-function changePassword(){toast("Use Supabase Auth password flow in production")}
-async function publish(){
-  toast("Publishing...");
+  (data||[]).forEach(row=>{
+    content[row.key]=row.value;
+  });
 
-  const site={
-    name:name.value,
-    role:role.value,
-    hero:hero.value,
-    bio:bio.value,
+  $("dbStatus").textContent="ONLINE";
+
+  loadAll();
+}
+
+async function saveKey(key,value){
+  if(!db){
+    toast("Database not connected");
+    return false;
+  }
+
+  const {data:{session}}=await db.auth.getSession();
+
+  if(!session){
+    toast("Session expired — login again");
+    return false;
+  }
+
+  const {error}=await db
+    .from("portfolio_content")
+    .upsert(
+      {
+        key:key,
+        value:value,
+        updated_at:new Date().toISOString()
+      },
+      {onConflict:"key"}
+    );
+
+  if(error){
+    console.error(error);
+    toast("Save failed: "+error.message);
+    return false;
+  }
+
+  content[key]=value;
+  toast(key+" saved successfully ✓");
+  return true;
+}
+
+/* PROFILE */
+
+function getSite(){
+  return {
+    name:$("profileName").value,
+    role:$("profileRole").value,
+    hero:$("profileHero").value,
+    bio:$("profileBio").value,
     stats:{
-      projects:projectsStat.value,
-      clients:clientsStat.value,
-      years:yearsStat.value,
-      views:viewsStat.value
+      projects:$("statProjects").value,
+      clients:$("statClients").value,
+      years:$("statYears").value,
+      views:$("statViews").value
     }
   };
-
-  if(!await saveKey('site',site)) return;
-  if(!await saveKey('projects',content.projects||[])) return;
-  if(!await saveKey('services',content.services||[])) return;
-
-  toast("Published successfully ✓");
 }
-function exportJSON(){let b=new Blob([JSON.stringify(content,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='zaid-portfolio-content.json';a.click()}
-function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function toast(x){let t=document.getElementById('toast');t.textContent=x;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
-document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(b.dataset.p).classList.add('active')});
-['Hero','Stats','Projects','About','Services','Contact'].forEach(x=>sectionList.innerHTML+='<div class="card" style="margin-bottom:7px"><b>'+x+'</b><span style="float:right">✓ &nbsp; ↑ &nbsp; ↓</span></div>');
-connect();
-</script></body></html>
+
+function loadSite(){
+  const s=content.site||{};
+  const stats=s.stats||{};
+
+  $("profileName").value=s.name||"ZAID";
+  $("profileRole"
