@@ -372,7 +372,49 @@ main{
       <p class="muted">Manage portfolio projects.</p>
     </div>
 
-    <button class="btn" id="addProjectBtn">+ Add Project</button>
+    <button class="btn" id="addProjectBtn" type="button">+ Add Project</button>
+  </div>
+
+  <div class="card" id="projectForm" style="display:none">
+    <h3>Add / Edit Project</h3>
+
+    <div class="grid">
+      <div class="field">
+        <label>Project Title</label>
+        <input id="projectTitle" placeholder="Project title">
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <input id="projectCategory" placeholder="Motion Graphics">
+      </div>
+
+      <div class="field">
+        <label>Thumbnail URL</label>
+        <input id="projectImage" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label>Project URL</label>
+        <input id="projectUrl" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <textarea id="projectDescription" rows="4"
+        placeholder="Describe this project..."></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="saveProjectBtn" type="button">
+        Save Project
+      </button>
+
+      <button class="btn" id="cancelProjectBtn" type="button">
+        Cancel
+      </button>
+    </div>
   </div>
 
   <div class="card" id="projectList"></div>
