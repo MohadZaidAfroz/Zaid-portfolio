@@ -949,7 +949,134 @@ async function saveKey(key,value){
   toast(key+" saved successfully ✓");
   return true;
 }
+/* PROJECT CRUD */
 
+let editingProjectIndex = -1;
+
+function renderProjects(){
+  const box = $("projectList");
+  if(!box) return;
+
+  if(!content.projects || !content.projects.length){
+    box.innerHTML = '<p class="muted">No projects added yet.</p>';
+    return;
+  }
+
+  box.innerHTML = content.projects.map((p,i)=>`
+    <div class="project">
+      <div>
+        <strong>${esc(p.title || "Untitled Project")}</strong>
+        <div class="muted">${esc(p.category || "")}</div>
+        <small>${esc(p.description || "")}</small>
+      </div>
+
+      <div class="actions">
+        <button class="btn" onclick="editProject(${i})">Edit</button>
+        <button class="btn" onclick="deleteProject(${i})">Delete</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function clearProjectForm(){
+  $("projectTitle").value = "";
+  $("projectCategory").value = "";
+  $("projectImage").value = "";
+  $("projectUrl").value = "";
+  $("projectDescription").value = "";
+
+  editingProjectIndex = -1;
+
+  if($("projectForm")){
+    $("projectForm").style.display = "none";
+  }
+}
+
+function openProjectForm(){
+  editingProjectIndex = -1;
+
+  $("projectTitle").value = "";
+  $("projectCategory").value = "";
+  $("projectImage").value = "";
+  $("projectUrl").value = "";
+  $("projectDescription").value = "";
+
+  $("projectForm").style.display = "block";
+
+  $("projectTitle").focus();
+}
+
+function editProject(index){
+  const p = content.projects[index];
+
+  if(!p) return;
+
+  editingProjectIndex = index;
+
+  $("projectTitle").value = p.title || "";
+  $("projectCategory").value = p.category || "";
+  $("projectImage").value = p.image || "";
+  $("projectUrl").value = p.url || "";
+  $("projectDescription").value = p.description || "";
+
+  $("projectForm").style.display = "block";
+
+  $("projectTitle").focus();
+}
+
+async function saveProject(){
+  const project = {
+    title: $("projectTitle").value.trim(),
+    category: $("projectCategory").value.trim(),
+    image: $("projectImage").value.trim(),
+    url: $("projectUrl").value.trim(),
+    description: $("projectDescription").value.trim()
+  };
+
+  if(!project.title){
+    toast("Project title is required");
+    return;
+  }
+
+  if(editingProjectIndex === -1){
+    content.projects.push(project);
+  }else{
+    content.projects[editingProjectIndex] = project;
+  }
+
+  const ok = await saveKey("projects", content.projects);
+
+  if(ok){
+    renderProjects();
+    clearProjectForm();
+    toast("Project saved successfully ✓");
+  }
+}
+
+async function deleteProject(index){
+  if(!content.projects[index]) return;
+
+  if(!confirm("Delete this project?")) return;
+
+  content.projects.splice(index,1);
+
+  const ok = await saveKey("projects", content.projects);
+
+  if(ok){
+    renderProjects();
+    toast("Project deleted ✓");
+  }
+}
+
+/* PROJECT BUTTONS */
+
+$("addProjectBtn")?.addEventListener("click", openProjectForm);
+
+$("saveProjectBtn")?.addEventListener("click", saveProject);
+
+$("cancelProjectBtn")?.addEventListener("click", clearProjectForm);
+
+renderProjects();
 /* PROFILE */
 
 function getSite(){
