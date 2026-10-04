@@ -293,20 +293,35 @@ function render(d){
   }
 
   if($("projects")){
-    $("projects").innerHTML=(d.projects||[])
-      .filter(p=>p.visible!==false)
-      .map(p=>
-        '<article class="project reveal">'+
-        '<div class="thumb">'+
-        (p.image?
-          '<img src="'+esc(p.image)+'" alt="'+esc(p.title||"Project")+'">':
-          '<div class="play">▶</div>')+
-        '</div>'+
-        '<h3>'+esc(p.title||"Untitled Project")+'</h3>'+
-        '<p>'+esc(p.description||"")+'</p>'+
-        '</article>'
-      ).join("");
-  }
+  $("projects").innerHTML=(d.projects||[])
+    .filter(p=>p.visible!==false)
+    .map(p=>{
+      const url=p.url||"";
+      const image=p.image||"";
+
+      return `
+        <a class="project reveal"
+           href="${esc(url)}"
+           ${url?'target="_blank" rel="noopener noreferrer"':''}
+           style="text-decoration:none;color:inherit;display:block;cursor:pointer">
+
+          <div class="thumb">
+            ${
+              image
+              ? `<img src="${esc(image)}"
+                     alt="${esc(p.title||"Project")}"
+                     onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;play&quot;>▶</div>';">`
+              : `<div class="play">▶</div>`
+            }
+          </div>
+
+          <h3>${esc(p.title||"Untitled Project")}</h3>
+          <p>${esc(p.description||"")}</p>
+
+        </a>
+      `;
+    }).join("");
+}
 
   if($("aboutText")){
     const about=s.about||
