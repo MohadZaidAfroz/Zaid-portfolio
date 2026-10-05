@@ -1082,8 +1082,8 @@ const fileName =
 const filePath = "projects/" + fileName;
 
 const { error: uploadError } =
-  await supabase.storage
-    .from("portfolio-videos")
+  await db.storage
+  .from("portfolio-videos")
     .upload(filePath, videoFile, {
       contentType: videoFile.type,
       upsert: false
@@ -1096,9 +1096,9 @@ if(uploadError){
 }
 
 const { data: publicData } =
-  supabase.storage
-    .from("portfolio-videos")
-    .getPublicUrl(filePath);
+  db.storage
+  .from("portfolio-videos")
+  .getPublicUrl(filePath);
 
 const videoUrl = publicData.publicUrl;
   const project = {
