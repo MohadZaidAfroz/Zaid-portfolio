@@ -1039,10 +1039,41 @@ async function saveProject(){
   }
 
   if(editingProjectIndex === -1){
-    content.projects.push(project);
+
+    const newKey =
+      project.title.toLowerCase() + "|" +
+      project.url.toLowerCase();
+
+    const existingIndex = content.projects.findIndex(p =>
+      ((p.title || "").trim().toLowerCase() + "|" +
+       (p.url || "").trim().toLowerCase()) === newKey
+    );
+
+    if(existingIndex !== -1){
+      content.projects[existingIndex] = project;
+    }else{
+      content.projects.push(project);
+    }
+
   }else{
     content.projects[editingProjectIndex] = project;
   }
+
+  /* Remove duplicate projects */
+  const seen = new Set();
+
+  content.projects = content.projects.filter(p => {
+    const key =
+      (p.title || "").trim().toLowerCase() + "|" +
+      (p.url || "").trim().toLowerCase();
+
+    if(seen.has(key)){
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
 
   const ok = await saveKey("projects", content.projects);
 
