@@ -395,17 +395,38 @@ main{
       </div>
 
       <div class="field">
-        <label>Project URL</label>
-        <input id="projectUrl" placeholder="https://...">
-      </div>
-    </div>
+      <div class="field">
+  <label>Video Source</label>
 
-    <div class="field">
-      <label>Description</label>
-      <textarea id="projectDescription" rows="4"
-        placeholder="Describe this project..."></textarea>
-    </div>
+  <select id="videoSource" onchange="changeVideoSource()">
+    <option value="drive">Google Drive</option>
+    <option value="youtube">YouTube</option>
+    <option value="direct">Direct Video URL</option>
+  </select>
+</div>
 
+<div class="field" id="videoUrlField">
+  <label>Video URL</label>
+
+  <input
+    id="projectUrl"
+    placeholder="Paste your video link here..."
+  >
+
+  <small class="muted">
+    Google Drive, YouTube or direct video URL
+  </small>
+</div>
+
+<div class="field">
+  <label>Description</label>
+
+  <textarea
+    id="projectDescription"
+    rows="4"
+    placeholder="Describe this project..."
+  ></textarea>
+</div>
     <div class="actions">
       <button class="btn primary" id="saveProjectBtn" type="button">
         Save Project
@@ -982,6 +1003,7 @@ function clearProjectForm(){
   $("projectTitle").value = "";
   $("projectCategory").value = "";
   $("projectImage").value = "";
+  $("videoSource").value = "drive";
   $("projectUrl").value = "";
   $("projectDescription").value = "";
 
@@ -998,6 +1020,7 @@ function openProjectForm(){
   $("projectTitle").value = "";
   $("projectCategory").value = "";
   $("projectImage").value = "";
+  $("videoSource").value = "drive";
   $("projectUrl").value = "";
   $("projectDescription").value = "";
 
@@ -1006,6 +1029,24 @@ function openProjectForm(){
   $("projectTitle").focus();
 }
 
+  function changeVideoSource(){
+
+  const source = $("videoSource").value;
+  const input = $("projectUrl");
+
+  if(source === "drive"){
+    input.placeholder = "Paste Google Drive video link...";
+  }
+
+  if(source === "youtube"){
+    input.placeholder = "Paste YouTube video link...";
+  }
+
+  if(source === "direct"){
+    input.placeholder = "Paste direct .mp4 / .webm video URL...";
+  }
+
+  }
 function editProject(index){
   const p = content.projects[index];
 
@@ -1016,6 +1057,7 @@ function editProject(index){
   $("projectTitle").value = p.title || "";
   $("projectCategory").value = p.category || "";
   $("projectImage").value = p.image || "";
+  $("videoSource").value = p.videoSource || "drive";
   $("projectUrl").value = p.url || "";
   $("projectDescription").value = p.description || "";
 
@@ -1025,16 +1067,26 @@ function editProject(index){
 }
 
 async function saveProject(){
+
   const project = {
     title: $("projectTitle").value.trim(),
     category: $("projectCategory").value.trim(),
     image: $("projectImage").value.trim(),
+
+    videoSource: $("videoSource").value,
+
     url: $("projectUrl").value.trim(),
+
     description: $("projectDescription").value.trim()
   };
 
   if(!project.title){
     toast("Project title is required");
+    return;
+  }
+
+  if(!project.url){
+    toast("Video URL is required");
     return;
   }
 
@@ -1044,9 +1096,10 @@ async function saveProject(){
       project.title.toLowerCase() + "|" +
       project.url.toLowerCase();
 
-    const existingIndex = content.projects.findIndex(p =>
-      ((p.title || "").trim().toLowerCase() + "|" +
-       (p.url || "").trim().toLowerCase()) === newKey
+    const existingIndex = content.projects.findIndex(
+      (p) =>
+        (p.title || "").trim().toLowerCase() + "|" +
+        (p.url || "").trim().toLowerCase() === newKey
     );
 
     if(existingIndex !== -1){
@@ -1056,13 +1109,17 @@ async function saveProject(){
     }
 
   }else{
+
     content.projects[editingProjectIndex] = project;
+
   }
 
   /* Remove duplicate projects */
+
   const seen = new Set();
 
   content.projects = content.projects.filter(p => {
+
     const key =
       (p.title || "").trim().toLowerCase() + "|" +
       (p.url || "").trim().toLowerCase();
@@ -1072,17 +1129,27 @@ async function saveProject(){
     }
 
     seen.add(key);
+
     return true;
+
   });
 
-  const ok = await saveKey("projects", content.projects);
+  const ok = await saveKey(
+    "projects",
+    content.projects
+  );
 
   if(ok){
+
     renderProjects();
+
     clearProjectForm();
+
     toast("Project saved successfully ✓");
+
   }
-}
+
+  }
 
 async function deleteProject(index){
   if(!content.projects[index]) return;
