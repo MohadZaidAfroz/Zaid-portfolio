@@ -998,11 +998,16 @@ function renderProjects(){
 }
 
 function clearProjectForm(){
+
   $("projectTitle").value = "";
   $("projectCategory").value = "";
   $("projectImage").value = "";
-  $("videoSource").value = "drive";
-  $("projectUrl").value = "";
+
+  const videoInput = $("projectVideo");
+  if(videoInput){
+    videoInput.value = "";
+  }
+
   $("projectDescription").value = "";
 
   editingProjectIndex = -1;
@@ -1012,40 +1017,29 @@ function clearProjectForm(){
   }
 }
 
+
 function openProjectForm(){
+
   editingProjectIndex = -1;
 
   $("projectTitle").value = "";
   $("projectCategory").value = "";
   $("projectImage").value = "";
-  $("videoSource").value = "drive";
-  $("projectUrl").value = "";
+
+  const videoInput = $("projectVideo");
+  if(videoInput){
+    videoInput.value = "";
+  }
+
   $("projectDescription").value = "";
 
   $("projectForm").style.display = "block";
 
   $("projectTitle").focus();
 }
-
-  function changeVideoSource(){
-
-  const source = $("videoSource").value;
-  const input = $("projectUrl");
-
-  if(source === "drive"){
-    input.placeholder = "Paste Google Drive video link...";
-  }
-
-  if(source === "youtube"){
-    input.placeholder = "Paste YouTube video link...";
-  }
-
-  if(source === "direct"){
-    input.placeholder = "Paste direct .mp4 / .webm video URL...";
-  }
-
-  }
+  
 function editProject(index){
+
   const p = content.projects[index];
 
   if(!p) return;
@@ -1055,8 +1049,12 @@ function editProject(index){
   $("projectTitle").value = p.title || "";
   $("projectCategory").value = p.category || "";
   $("projectImage").value = p.image || "";
-  $("videoSource").value = p.videoSource || "drive";
-  $("projectUrl").value = p.url || "";
+
+  const videoInput = $("projectVideo");
+  if(videoInput){
+    videoInput.value = "";
+  }
+
   $("projectDescription").value = p.description || "";
 
   $("projectForm").style.display = "block";
