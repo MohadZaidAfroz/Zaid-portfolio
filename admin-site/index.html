@@ -395,28 +395,26 @@ main{
       </div>
 
       <div class="field">
-      <div class="field">
-  <label>Video Source</label>
-
-  <select id="videoSource" onchange="changeVideoSource()">
-    <option value="drive">Google Drive</option>
-    <option value="youtube">YouTube</option>
-    <option value="direct">Direct Video URL</option>
-  </select>
-</div>
-
-<div class="field" id="videoUrlField">
-  <label>Video URL</label>
+  <label>Project Video</label>
 
   <input
-    id="projectUrl"
-    placeholder="Paste your video link here..."
+    id="projectVideo"
+    type="file"
+    accept="video/mp4,video/webm,video/quicktime"
   >
 
   <small class="muted">
-    Google Drive, YouTube or direct video URL
+    Select a video from your phone or computer.
+    MP4, WebM or MOV
   </small>
+
+  <div
+    id="videoUploadStatus"
+    class="muted"
+    style="margin-top:8px;"
+  ></div>
 </div>
+      
 
 <div class="field">
   <label>Description</label>
@@ -1068,25 +1066,57 @@ function editProject(index){
 
 async function saveProject(){
 
+  const videoInput = $("projectVideo");
+const videoFile = videoInput?.files?.[0];
+
+if(!videoFile){
+  toast("Please select a video");
+  return;
+}
+
+const extension = videoFile.name.split(".").pop().toLowerCase();
+
+const fileName =
+  Date.now() + "-" +
+  Math.random().toString(36).substring(2) +
+  "." + extension;
+
+const filePath = "projects/" + fileName;
+
+const { error: uploadError } =
+  await supabase.storage
+    .from("portfolio-videos")
+    .upload(filePath, videoFile, {
+      contentType: videoFile.type,
+      upsert: false
+    });
+
+if(uploadError){
+  console.error(uploadError);
+  toast("Video upload failed");
+  return;
+}
+
+const { data: publicData } =
+  supabase.storage
+    .from("portfolio-videos")
+    .getPublicUrl(filePath);
+
+const videoUrl = publicData.publicUrl;
   const project = {
     title: $("projectTitle").value.trim(),
     category: $("projectCategory").value.trim(),
     image: $("projectImage").value.trim(),
 
-    videoSource: $("videoSource").value,
+    videoSource: "supabase",
 
-    url: $("projectUrl").value.trim(),
+    url: videoUrl,
 
     description: $("projectDescription").value.trim()
   };
 
   if(!project.title){
     toast("Project title is required");
-    return;
-  }
-
-  if(!project.url){
-    toast("Video URL is required");
     return;
   }
 
