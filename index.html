@@ -300,17 +300,17 @@ function render(d){
       const image=p.image||"";
 
       return `
-        <a class="project reveal"
-           href="${esc(url)}"
-           ${url?'target="_blank" rel="noopener noreferrer"':''}
-           style="text-decoration:none;color:inherit;display:block;cursor:pointer">
+        <article class="project reveal"
+          onclick='playProject(${JSON.stringify(url)},${JSON.stringify(p.title||"Project")})'
+          style="cursor:pointer">
 
           <div class="thumb">
             ${
               image
               ? `<img src="${esc(image)}"
-                     alt="${esc(p.title||"Project")}"
-                     onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;play&quot;>▶</div>';">`
+                   alt="${esc(p.title||"Project")}"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                 <div class="play">▶</div>`
               : `<div class="play">▶</div>`
             }
           </div>
@@ -318,11 +318,10 @@ function render(d){
           <h3>${esc(p.title||"Untitled Project")}</h3>
           <p>${esc(p.description||"")}</p>
 
-        </a>
+        </article>
       `;
     }).join("");
-}
-
+  }
   if($("aboutText")){
     const about=s.about||
       "I turn raw footage into clear, engaging stories with pacing, sound design and motion.";
@@ -397,6 +396,99 @@ window.addEventListener("scroll",()=>{
 
 /* ---------- DATABASE ---------- */
 
+  function playProject(url,title){
+
+  if(!url) return;
+
+  let videoUrl = url;
+
+  // Google Drive link ko embed/preview link mein convert karo
+  const driveMatch = url.match(/\/file\/d\/([^/]+)/);
+
+  if(driveMatch){
+    videoUrl = "https://drive.google.com/file/d/" + driveMatch[1] + "/preview";
+  }
+
+  const old = document.getElementById("videoModal");
+  if(old) old.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "videoModal";
+
+  modal.innerHTML = `
+    <div style="
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      background:rgba(0,0,0,.92);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    " onclick="if(event.target===this)this.remove()">
+
+      <div style="
+        width:min(100%,1000px);
+        background:#111;
+        border-radius:18px;
+        overflow:hidden;
+        position:relative;
+      ">
+
+        <button
+          onclick="document.getElementById('videoModal').remove()"
+          style="
+            position:absolute;
+            right:12px;
+            top:12px;
+            z-index:2;
+            width:42px;
+            height:42px;
+            border:0;
+            border-radius:50%;
+            background:#fff;
+            color:#000;
+            font-size:22px;
+            cursor:pointer;
+          "
+        >×</button>
+
+        <div style="
+          position:relative;
+          width:100%;
+          aspect-ratio:16/9;
+          background:#000;
+        ">
+
+          <iframe
+            src="${esc(videoUrl)}"
+            title="${esc(title)}"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+            style="
+              width:100%;
+              height:100%;
+              border:0;
+            "
+          ></iframe>
+
+        </div>
+
+        <div style="
+          padding:14px 18px;
+          color:#fff;
+          font-size:18px;
+          font-weight:600;
+        ">
+          ${esc(title)}
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  }
 async function load(){
   try{
     if(
