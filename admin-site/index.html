@@ -1145,5 +1145,2710 @@
 
             <label>
               Glow
-              </body>
-            </html>
+                          </label>
+
+            <div class="range-row">
+              <input
+                id="themeGlow"
+                type="range"
+                min="0"
+                max="100"
+                value="30"
+              >
+              <span
+                class="range-value"
+                id="themeGlowValue"
+              ></span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TYPOGRAPHY -->
+
+    <section class="page" id="typography">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Typography</h1>
+          <div class="muted">
+            Control fonts, sizes, weights and spacing.
+          </div>
+        </div>
+
+        <button class="btn" id="saveTypography">
+          Save Typography
+        </button>
+
+      </div>
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>Fonts</h3>
+
+          <div class="field">
+            <label>Heading Font</label>
+
+            <select id="fontHeading">
+              <option value="Inter">Inter</option>
+              <option value="Poppins">Poppins</option>
+              <option value="Montserrat">Montserrat</option>
+              <option value="Manrope">Manrope</option>
+              <option value="DM Sans">DM Sans</option>
+              <option value="Space Grotesk">Space Grotesk</option>
+              <option value="Playfair Display">Playfair Display</option>
+              <option value="Bebas Neue">Bebas Neue</option>
+            </select>
+
+          </div>
+
+          <div class="field">
+            <label>Body Font</label>
+
+            <select id="fontBody">
+              <option value="Inter">Inter</option>
+              <option value="Poppins">Poppins</option>
+              <option value="Montserrat">Montserrat</option>
+              <option value="Manrope">Manrope</option>
+              <option value="DM Sans">DM Sans</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Space Grotesk">Space Grotesk</option>
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Text Scale</h3>
+
+          <div class="field">
+            <label>Hero Size</label>
+
+            <div class="range-row">
+              <input
+                id="typeHero"
+                type="range"
+                min="30"
+                max="120"
+                value="72"
+              >
+
+              <span
+                class="range-value"
+                id="typeHeroValue"
+              ></span>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+            <label>Heading Size</label>
+
+            <div class="range-row">
+              <input
+                id="typeHeading"
+                type="range"
+                min="20"
+                max="70"
+                value="42"
+              >
+
+              <span
+                class="range-value"
+                id="typeHeadingValue"
+              ></span>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+            <label>Body Size</label>
+
+            <div class="range-row">
+              <input
+                id="typeBody"
+                type="range"
+                min="12"
+                max="24"
+                value="16"
+              >
+
+              <span
+                class="range-value"
+                id="typeBodyValue"
+              ></span>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+            <label>Letter Spacing</label>
+
+            <div class="range-row">
+              <input
+                id="typeSpacing"
+                type="range"
+                min="-2"
+                max="10"
+                step="0.1"
+                value="0"
+              >
+
+              <span
+                class="range-value"
+                id="typeSpacingValue"
+              ></span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Weights</h3>
+
+          <div class="field">
+            <label>Heading Weight</label>
+
+            <select id="typeWeight">
+              <option value="400">400 — Regular</option>
+              <option value="500">500 — Medium</option>
+              <option value="600">600 — Semi Bold</option>
+              <option value="700" selected>700 — Bold</option>
+              <option value="800">800 — Extra Bold</option>
+              <option value="900">900 — Black</option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ANIMATIONS -->
+
+    <section class="page" id="animations">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Animations</h1>
+          <div class="muted">
+            Control scroll reveal and motion effects.
+          </div>
+        </div>
+
+        <button class="btn" id="saveAnimations">
+          Save Animations
+        </button>
+
+      </div>
+
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>Reveal Effect</h3>
+
+          <div class="field">
+
+            <label>Animation</label>
+
+            <select id="animType">
+              <option value="fade">Fade</option>
+              <option value="slide-up">Slide Up</option>
+              <option value="slide-left">Slide Left</option>
+              <option value="slide-right">Slide Right</option>
+              <option value="scale">Scale</option>
+              <option value="zoom">Zoom</option>
+              <option value="blur">Blur → Clear</option>
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Duration</label>
+
+            <div class="range-row">
+
+              <input
+                id="animDuration"
+                type="range"
+                min="100"
+                max="2000"
+                step="50"
+                value="700"
+              >
+
+              <span
+                class="range-value"
+                id="animDurationValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Delay</label>
+
+            <div class="range-row">
+
+              <input
+                id="animDelay"
+                type="range"
+                min="0"
+                max="1000"
+                step="50"
+                value="0"
+              >
+
+              <span
+                class="range-value"
+                id="animDelayValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Motion</h3>
+
+          <div class="field">
+
+            <label>Distance</label>
+
+            <div class="range-row">
+
+              <input
+                id="animDistance"
+                type="range"
+                min="0"
+                max="100"
+                value="30"
+              >
+
+              <span
+                class="range-value"
+                id="animDistanceValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Blur Amount</label>
+
+            <div class="range-row">
+
+              <input
+                id="animBlur"
+                type="range"
+                min="0"
+                max="30"
+                value="10"
+              >
+
+              <span
+                class="range-value"
+                id="animBlurValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Stagger</label>
+
+            <div class="range-row">
+
+              <input
+                id="animStagger"
+                type="range"
+                min="0"
+                max="500"
+                step="25"
+                value="75"
+              >
+
+              <span
+                class="range-value"
+                id="animStaggerValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- LAYOUT -->
+
+    <section class="page" id="layout">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Layout</h1>
+          <div class="muted">
+            Control spacing, container width and responsive layout.
+          </div>
+        </div>
+
+        <button class="btn" id="saveLayout">
+          Save Layout
+        </button>
+
+      </div>
+
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>Container</h3>
+
+          <div class="field">
+
+            <label>Maximum Width</label>
+
+            <div class="range-row">
+
+              <input
+                id="layoutMaxWidth"
+                type="range"
+                min="800"
+                max="1800"
+                value="1200"
+              >
+
+              <span
+                class="range-value"
+                id="layoutMaxWidthValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Section Spacing</label>
+
+            <div class="range-row">
+
+              <input
+                id="layoutSectionGap"
+                type="range"
+                min="20"
+                max="180"
+                value="90"
+              >
+
+              <span
+                class="range-value"
+                id="layoutSectionGapValue"
+              ></span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Header</h3>
+
+          <div class="field">
+
+            <label class="check">
+
+              <input
+                id="layoutStickyHeader"
+                type="checkbox"
+                checked
+              >
+
+              Sticky Header
+
+            </label>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="check">
+
+              <input
+                id="layoutHeaderBlur"
+                type="checkbox"
+                checked
+              >
+
+              Header Blur
+
+            </label>
+
+          </div>
+
+          <div class="field">
+
+            <label class="check">
+
+              <input
+                id="layoutHideHeader"
+                type="checkbox"
+              >
+
+              Hide Header on Scroll Down
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SECTIONS -->
+
+    <section class="page" id="sections">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Sections</h1>
+          <div class="muted">
+            Choose which sections appear on the public website.
+          </div>
+        </div>
+
+        <button class="btn" id="saveSections">
+          Save Sections
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="section-toggle">
+
+          <label class="check">
+            <input id="sectionHero" type="checkbox" checked>
+            Hero
+          </label>
+
+          <label class="check">
+            <input id="sectionStats" type="checkbox" checked>
+            Statistics
+          </label>
+
+          <label class="check">
+            <input id="sectionProjects" type="checkbox" checked>
+            Projects
+          </label>
+
+          <label class="check">
+            <input id="sectionServices" type="checkbox" checked>
+            Services
+          </label>
+
+          <label class="check">
+            <input id="sectionAbout" type="checkbox" checked>
+            About
+          </label>
+
+          <label class="check">
+            <input id="sectionWorkflow" type="checkbox" checked>
+            Workflow
+          </label>
+
+          <label class="check">
+            <input id="sectionContact" type="checkbox" checked>
+            Contact
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SEO -->
+
+    <section class="page" id="seo">
+
+      <div class="page-title">
+
+        <div>
+          <h1>SEO & Social</h1>
+          <div class="muted">
+            Manage search-engine and social information.
+          </div>
+        </div>
+
+        <button class="btn" id="saveSeo">
+          Save SEO
+        </button>
+
+      </div>
+
+
+      <div class="grid">
+
+        <div class="card">
+
+          <div class="field">
+            <label>Website Title</label>
+            <input id="seoTitle">
+          </div>
+
+          <div class="field">
+            <label>Description</label>
+            <textarea id="seoDescription"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Keywords</label>
+            <input id="seoKeywords">
+          </div>
+
+          <div class="field">
+            <label>OG Image URL</label>
+            <input id="seoImage">
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Social Links</h3>
+
+          <div class="field">
+            <label>Instagram</label>
+            <input id="socialInstagram">
+          </div>
+
+          <div class="field">
+            <label>YouTube</label>
+            <input id="socialYoutube">
+          </div>
+
+          <div class="field">
+            <label>LinkedIn</label>
+            <input id="socialLinkedin">
+          </div>
+
+          <div class="field">
+            <label>WhatsApp</label>
+            <input id="socialWhatsapp">
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input id="socialEmail">
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SECURITY -->
+
+    <section class="page" id="security">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Security</h1>
+          <div class="muted">
+            Manage your admin session.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>Admin Account</h3>
+
+        <p class="muted" id="currentAdminEmail">
+          Loading...
+        </p>
+
+        <div class="actions">
+
+          <button
+            class="btn dark"
+            id="logoutAllBtn"
+          >
+            Logout Current Session
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BACKUP -->
+
+    <section class="page" id="backup">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Backup</h1>
+          <div class="muted">
+            Export your portfolio configuration.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>Portfolio Backup</h3>
+
+        <p class="muted">
+          Download the current portfolio database content as JSON.
+        </p>
+
+        <button
+          class="btn"
+          id="exportBackup"
+        >
+          Export Backup
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../config.js"></script>
+
+
+<script>
+
+let db = null;
+
+let currentUser = null;
+
+let portfolio = {
+  site: {},
+  projects: [],
+  services: []
+};
+
+let editingProjectId = null;
+
+
+/* -------------------------
+   HELPERS
+------------------------- */
+
+const $ = id => document.getElementById(id);
+
+
+function setMessage(message, type = "") {
+
+  const el = $("loginMessage");
+
+  if (!el) return;
+
+  el.textContent = message;
+
+  el.className = "muted " + type;
+
+}
+
+
+function showApp() {
+
+  $("loginScreen").style.display = "none";
+
+  $("app").style.display = "block";
+
+}
+
+
+function showLogin() {
+
+  $("loginScreen").style.display = "flex";
+
+  $("app").style.display = "none";
+
+}
+
+
+/* -------------------------
+   SUPABASE
+------------------------- */
+
+function initializeSupabase() {
+
+  const config = window.ZAID_CONFIG;
+
+  if (
+    !config ||
+    !config.SUPABASE_URL ||
+    !config.SUPABASE_ANON_KEY
+  ) {
+
+    throw new Error(
+      "Supabase configuration is missing."
+    );
+
+  }
+
+  db = supabase.createClient(
+    config.SUPABASE_URL,
+    config.SUPABASE_ANON_KEY
+  );
+
+}
+
+
+/* -------------------------
+   AUTH
+------------------------- */
+
+async function checkAuth() {
+
+  const {
+    data,
+    error
+  } = await db.auth.getSession();
+
+  if (error) {
+
+    setMessage(error.message, "error");
+
+    return;
+
+  }
+
+  if (data.session) {
+
+    currentUser = data.session.user;
+
+    showApp();
+
+    await loadPortfolio();
+
+  } else {
+
+    showLogin();
+
+  }
+
+}
+
+
+async function login() {
+
+  const email =
+    $("loginEmail").value.trim();
+
+  const password =
+    $("loginPassword").value;
+
+
+  if (!email || !password) {
+
+    setMessage(
+      "Enter email and password.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button = $("loginBtn");
+
+  button.disabled = true;
+
+  button.textContent = "Logging in...";
+
+
+  setMessage("Connecting to Supabase...");
+
+
+  try {
+
+    const {
+      data,
+      error
+    } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+
+    if (error) {
+
+      setMessage(
+        error.message,
+        "error"
+      );
+
+      button.disabled = false;
+
+      button.textContent = "Login";
+
+      return;
+
+    }
+
+
+    currentUser = data.user;
+
+    setMessage("Login successful.");
+
+    showApp();
+
+    await loadPortfolio();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    setMessage(
+      error.message || "Login failed.",
+      "error"
+    );
+
+  }
+
+
+  button.disabled = false;
+
+  button.textContent = "Login";
+
+}
+
+
+async function logout() {
+
+  await db.auth.signOut();
+
+  currentUser = null;
+
+  showLogin();
+
+}
+
+
+async function logoutAll() {
+
+  await logout();
+
+}
+
+
+/* -------------------------
+   LOAD DATABASE
+------------------------- */
+
+async function loadPortfolio() {
+
+  try {
+
+    const {
+      data,
+      error
+    } = await db
+      .from("portfolio_content")
+      .select("*");
+
+
+    if (error) {
+
+      console.error(error);
+
+      $("databaseStatus").textContent =
+        "ERROR";
+
+      return;
+
+    }
+
+
+    portfolio = {
+      site: {},
+      projects: [],
+      services: []
+    };
+
+
+    for (const row of data || []) {
+
+      if (row.key === "site") {
+
+        portfolio.site =
+          row.content || {};
+
+      }
+
+      if (row.key === "projects") {
+
+        portfolio.projects =
+          row.content || [];
+
+      }
+
+      if (row.key === "services") {
+
+        portfolio.services =
+          row.content || [];
+
+      }
+
+    }
+
+
+    $("databaseStatus").textContent =
+      "CONNECTED";
+
+
+    renderEverything();
+
+  } catch (error) {
+
+    console.error(error);
+
+    $("databaseStatus").textContent =
+      "ERROR";
+
+  }
+
+}
+
+
+/* -------------------------
+   SAVE DATABASE
+------------------------- */
+
+async function saveKey(key, content) {
+
+  const {
+    error
+  } = await db
+    .from("portfolio_content")
+    .upsert(
+      {
+        key,
+        content
+      },
+      {
+        onConflict: "key"
+      }
+    );
+
+
+  if (error) {
+
+    throw error;
+
+  }
+
+}
+
+
+async function saveAll() {
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+  await saveKey(
+    "projects",
+    portfolio.projects
+  );
+
+  await saveKey(
+    "services",
+    portfolio.services
+  );
+
+}
+
+
+/* -------------------------
+   PROFILE
+------------------------- */
+
+function loadProfile() {
+
+  const p =
+    portfolio.site.profile || {};
+
+  $("profileName").value =
+    p.name || "";
+
+  $("profileRole").value =
+    p.role || "";
+
+  $("profileHero").value =
+    p.hero || "";
+
+  $("profileBio").value =
+    p.bio || "";
+
+  $("profileAbout").value =
+    p.about || "";
+
+
+  const stats =
+    portfolio.site.stats || {};
+
+  $("statProjects").value =
+    stats.projects || "";
+
+  $("statClients").value =
+    stats.clients || "";
+
+  $("statYears").value =
+    stats.years || "";
+
+  $("statViews").value =
+    stats.views || "";
+
+}
+
+
+async function saveProfile() {
+
+  portfolio.site.profile = {
+
+    name:
+      $("profileName").value,
+
+    role:
+      $("profileRole").value,
+
+    hero:
+      $("profileHero").value,
+
+    bio:
+      $("profileBio").value,
+
+    about:
+      $("profileAbout").value
+
+  };
+
+
+  portfolio.site.stats = {
+
+    projects:
+      $("statProjects").value,
+
+    clients:
+      $("statClients").value,
+
+    years:
+      $("statYears").value,
+
+    views:
+      $("statViews").value
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert("Profile saved successfully ✓");
+
+}
+
+
+/* -------------------------
+   PROJECTS
+------------------------- */
+
+function renderProjects() {
+
+  const list =
+    $("projectList");
+
+  list.innerHTML = "";
+
+
+  $("projectCount").textContent =
+    portfolio.projects.length;
+
+
+  portfolio.projects.forEach(project => {
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "project-row";
+
+
+    row.innerHTML = `
+
+      <div>
+
+        <strong>
+          ${escapeHtml(project.title || "Untitled")}
+        </strong>
+
+        <div class="muted project-description">
+          ${escapeHtml(project.category || "")}
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn"
+          data-edit="${project.id}"
+        >
+          Edit
+        </button>
+
+        <button
+          class="btn danger"
+          data-delete="${project.id}"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    `;
+
+
+    list.appendChild(row);
+
+  });
+
+
+  list
+    .querySelectorAll("[data-edit]")
+    .forEach(button => {
+
+      button.onclick = () => {
+
+        editProject(
+          button.dataset.edit
+        );
+
+      };
+
+    });
+
+
+  list
+    .querySelectorAll("[data-delete]")
+    .forEach(button => {
+
+      button.onclick = () => {
+
+        deleteProject(
+          button.dataset.delete
+        );
+
+      };
+
+    });
+
+}
+
+
+function openProjectForm() {
+
+  $("projectForm").style.display =
+    "block";
+
+}
+
+
+function closeProjectForm() {
+
+  $("projectForm").style.display =
+    "none";
+
+  editingProjectId = null;
+
+  $("projectFormTitle").textContent =
+    "Add Project";
+
+  $("projectTitle").value = "";
+
+  $("projectCategory").value = "";
+
+  $("projectImage").value = "";
+
+  $("projectVideo").value = "";
+
+  $("projectDescription").value = "";
+
+  $("projectVisible").checked = true;
+
+  $("projectFeatured").checked = false;
+
+  $("videoUploadStatus").textContent =
+    "";
+
+}
+
+
+function editProject(id) {
+
+  const project =
+    portfolio.projects.find(
+      p => String(p.id) === String(id)
+    );
+
+
+  if (!project) return;
+
+
+  editingProjectId =
+    project.id;
+
+
+  $("projectFormTitle").textContent =
+    "Edit Project";
+
+
+  $("projectTitle").value =
+    project.title || "";
+
+  $("projectCategory").value =
+    project.category || "";
+
+  $("projectImage").value =
+    project.image || "";
+
+  $("projectDescription").value =
+    project.description || "";
+
+  $("projectVisible").checked =
+    project.visible !== false;
+
+  $("projectFeatured").checked =
+    project.featured === true;
+
+
+  openProjectForm();
+
+}
+
+
+async function saveProject() {
+
+  const title =
+    $("projectTitle").value.trim();
+
+
+  if (!title) {
+
+    alert("Project title is required.");
+
+    return;
+
+  }
+
+
+  const videoFile =
+    $("projectVideo").files[0];
+
+
+  let videoUrl = "";
+
+
+  if (editingProjectId) {
+
+    const oldProject =
+      portfolio.projects.find(
+        p =>
+          String(p.id) ===
+          String(editingProjectId)
+      );
+
+    videoUrl =
+      oldProject?.video || "";
+
+  }
+
+
+  if (videoFile) {
+
+    const status =
+      $("videoUploadStatus");
+
+    status.textContent =
+      "Uploading video...";
+
+
+    try {
+
+      const safeName =
+        videoFile.name
+          .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+
+      const path =
+        "projects/" +
+        Date.now() +
+        "-" +
+        safeName;
+
+
+      const {
+        error
+      } = await db.storage
+        .from("portfolio-videos")
+        .upload(
+          path,
+          videoFile,
+          {
+            upsert: false,
+            contentType:
+              videoFile.type
+          }
+        );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      const {
+        data
+      } = db.storage
+        .from("portfolio-videos")
+        .getPublicUrl(path);
+
+
+      videoUrl =
+        data.publicUrl;
+
+
+      status.textContent =
+        "Video uploaded ✓";
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      status.textContent =
+        "Upload failed: " +
+        error.message;
+
+      return;
+
+    }
+
+  }
+
+
+  const project = {
+
+    id:
+      editingProjectId ||
+      crypto.randomUUID(),
+
+    title,
+
+    category:
+      $("projectCategory").value.trim(),
+
+    image:
+      $("projectImage").value.trim(),
+
+    video:
+      videoUrl,
+
+    description:
+      $("projectDescription").value.trim(),
+
+    visible:
+      $("projectVisible").checked,
+
+    featured:
+      $("projectFeatured").checked
+
+  };
+
+
+  if (editingProjectId) {
+
+    portfolio.projects =
+      portfolio.projects.map(
+        p =>
+          String(p.id) ===
+          String(editingProjectId)
+            ? {
+                ...p,
+                ...project,
+                video:
+                  videoUrl || p.video || ""
+              }
+            : p
+      );
+
+  } else {
+
+    portfolio.projects.push(project);
+
+  }
+
+
+  await saveKey(
+    "projects",
+    portfolio.projects
+  );
+
+
+  renderProjects();
+
+  closeProjectForm();
+
+  alert("Project saved successfully ✓");
+
+}
+
+
+async function deleteProject(id) {
+
+  if (
+    !confirm(
+      "Delete this project?"
+    )
+  ) return;
+
+
+  portfolio.projects =
+    portfolio.projects.filter(
+      p =>
+        String(p.id) !==
+        String(id)
+    );
+
+
+  await saveKey(
+    "projects",
+    portfolio.projects
+  );
+
+
+  renderProjects();
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* -------------------------
+   SERVICES
+------------------------- */
+
+function renderServices() {
+
+  const list =
+    $("serviceList");
+
+  list.innerHTML = "";
+
+
+  $("serviceCount").textContent =
+    portfolio.services.length;
+
+
+  portfolio.services.forEach(service => {
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "service-row";
+
+
+    row.innerHTML = `
+
+      <div>
+
+        <strong>
+          ${escapeHtml(service.title || "Service")}
+        </strong>
+
+        <div class="muted">
+          ${escapeHtml(service.description || "")}
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn"
+          data-edit-service="${service.id}"
+        >
+          Edit
+        </button>
+
+        <button
+          class="btn danger"
+          data-delete-service="${service.id}"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    `;
+
+
+    list.appendChild(row);
+
+  });
+
+
+  list
+    .querySelectorAll("[data-edit-service]")
+    .forEach(button => {
+
+      button.onclick = () =>
+        editService(
+          button.dataset.editService
+        );
+
+    });
+
+
+  list
+    .querySelectorAll("[data-delete-service]")
+    .forEach(button => {
+
+      button.onclick = () =>
+        deleteService(
+          button.dataset.deleteService
+        );
+
+    });
+
+}
+
+
+async function addService() {
+
+  const title =
+    prompt(
+      "Service name:"
+    );
+
+  if (!title) return;
+
+
+  const description =
+    prompt(
+      "Service description:"
+    ) || "";
+
+
+  portfolio.services.push({
+
+    id:
+      crypto.randomUUID(),
+
+    title,
+
+    description
+
+  });
+
+
+  await saveKey(
+    "services",
+    portfolio.services
+  );
+
+
+  renderServices();
+
+}
+
+
+async function editService(id) {
+
+  const service =
+    portfolio.services.find(
+      s =>
+        String(s.id) ===
+        String(id)
+    );
+
+
+  if (!service) return;
+
+
+  const title =
+    prompt(
+      "Service name:",
+      service.title || ""
+    );
+
+
+  if (!title) return;
+
+
+  const description =
+    prompt(
+      "Service description:",
+      service.description || ""
+    );
+
+
+  service.title =
+    title;
+
+  service.description =
+    description || "";
+
+
+  await saveKey(
+    "services",
+    portfolio.services
+  );
+
+
+  renderServices();
+
+}
+
+
+async function deleteService(id) {
+
+  if (
+    !confirm(
+      "Delete this service?"
+    )
+  ) return;
+
+
+  portfolio.services =
+    portfolio.services.filter(
+      s =>
+        String(s.id) !==
+        String(id)
+    );
+
+
+  await saveKey(
+    "services",
+    portfolio.services
+  );
+
+
+  renderServices();
+
+}
+
+
+/* -------------------------
+   THEME
+------------------------- */
+
+function loadTheme() {
+
+  const theme =
+    portfolio.site.theme || {};
+
+
+  $("themeBg").value =
+    theme.bg || "#070707";
+
+  $("themeCard").value =
+    theme.card || "#111111";
+
+  $("themeBorder").value =
+    theme.border || "#242424";
+
+  $("themeAccent").value =
+    theme.accent || "#ffffff";
+
+  $("themeText").value =
+    theme.text || "#ffffff";
+
+  $("themeMuted").value =
+    theme.muted || "#999999";
+
+
+  $("themeRadius").value =
+    theme.radius ?? 18;
+
+  $("themeBlur").value =
+    theme.blur ?? 16;
+
+  $("themeShadow").value =
+    theme.shadow ?? 40;
+
+  $("themeGlow").value =
+    theme.glow ?? 30;
+
+
+  updateRangeValues();
+
+}
+
+
+async function saveTheme() {
+
+  portfolio.site.theme = {
+
+    bg:
+      $("themeBg").value,
+
+    card:
+      $("themeCard").value,
+
+    border:
+      $("themeBorder").value,
+
+    accent:
+      $("themeAccent").value,
+
+    text:
+      $("themeText").value,
+
+    muted:
+      $("themeMuted").value,
+
+    radius:
+      Number($("themeRadius").value),
+
+    blur:
+      Number($("themeBlur").value),
+
+    shadow:
+      Number($("themeShadow").value),
+
+    glow:
+      Number($("themeGlow").value)
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert("Theme saved successfully ✓");
+
+}
+
+
+/* -------------------------
+   TYPOGRAPHY
+------------------------- */
+
+function loadTypography() {
+
+  const t =
+    portfolio.site.typography || {};
+
+
+  $("fontHeading").value =
+    t.heading || "Inter";
+
+  $("fontBody").value =
+    t.body || "Inter";
+
+  $("typeHero").value =
+    t.hero ?? 72;
+
+  $("typeHeading").value =
+    t.headingSize ?? 42;
+
+  $("typeBody").value =
+    t.bodySize ?? 16;
+
+  $("typeSpacing").value =
+    t.spacing ?? 0;
+
+  $("typeWeight").value =
+    t.weight ?? 700;
+
+
+  updateRangeValues();
+
+}
+
+
+async function saveTypography() {
+
+  portfolio.site.typography = {
+
+    heading:
+      $("fontHeading").value,
+
+    body:
+      $("fontBody").value,
+
+    hero:
+      Number($("typeHero").value),
+
+    headingSize:
+      Number($("typeHeading").value),
+
+    bodySize:
+      Number($("typeBody").value),
+
+    spacing:
+      Number($("typeSpacing").value),
+
+    weight:
+      Number($("typeWeight").value)
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert(
+    "Typography saved successfully ✓"
+  );
+
+}
+
+
+/* -------------------------
+   ANIMATIONS
+------------------------- */
+
+function loadAnimations() {
+
+  const a =
+    portfolio.site.animations || {};
+
+
+  $("animType").value =
+    a.type || "fade";
+
+  $("animDuration").value =
+    a.duration ?? 700;
+
+  $("animDelay").value =
+    a.delay ?? 0;
+
+  $("animDistance").value =
+    a.distance ?? 30;
+
+  $("animBlur").value =
+    a.blur ?? 10;
+
+  $("animStagger").value =
+    a.stagger ?? 75;
+
+
+  updateRangeValues();
+
+}
+
+
+async function saveAnimations() {
+
+  portfolio.site.animations = {
+
+    type:
+      $("animType").value,
+
+    duration:
+      Number($("animDuration").value),
+
+    delay:
+      Number($("animDelay").value),
+
+    distance:
+      Number($("animDistance").value),
+
+    blur:
+      Number($("animBlur").value),
+
+    stagger:
+      Number($("animStagger").value)
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert(
+    "Animations saved successfully ✓"
+  );
+
+}
+
+
+/* -------------------------
+   LAYOUT
+------------------------- */
+
+function loadLayout() {
+
+  const l =
+    portfolio.site.layout || {};
+
+
+  $("layoutMaxWidth").value =
+    l.maxWidth ?? 1200;
+
+  $("layoutSectionGap").value =
+    l.sectionGap ?? 90;
+
+  $("layoutStickyHeader").checked =
+    l.stickyHeader !== false;
+
+  $("layoutHeaderBlur").checked =
+    l.headerBlur !== false;
+
+  $("layoutHideHeader").checked =
+    l.hideHeader === true;
+
+
+  updateRangeValues();
+
+}
+
+
+async function saveLayout() {
+
+  portfolio.site.layout = {
+
+    maxWidth:
+      Number($("layoutMaxWidth").value),
+
+    sectionGap:
+      Number($("layoutSectionGap").value),
+
+    stickyHeader:
+      $("layoutStickyHeader").checked,
+
+    headerBlur:
+      $("layoutHeaderBlur").checked,
+
+    hideHeader:
+      $("layoutHideHeader").checked
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert(
+    "Layout saved successfully ✓"
+  );
+
+}
+
+
+/* -------------------------
+   SECTIONS
+------------------------- */
+
+function loadSections() {
+
+  const s =
+    portfolio.site.sections || {};
+
+
+  $("sectionHero").checked =
+    s.hero !== false;
+
+  $("sectionStats").checked =
+    s.stats !== false;
+
+  $("sectionProjects").checked =
+    s.projects !== false;
+
+  $("sectionServices").checked =
+    s.services !== false;
+
+  $("sectionAbout").checked =
+    s.about !== false;
+
+  $("sectionWorkflow").checked =
+    s.workflow !== false;
+
+  $("sectionContact").checked =
+    s.contact !== false;
+
+}
+
+
+async function saveSections() {
+
+  portfolio.site.sections = {
+
+    hero:
+      $("sectionHero").checked,
+
+    stats:
+      $("sectionStats").checked,
+
+    projects:
+      $("sectionProjects").checked,
+
+    services:
+      $("sectionServices").checked,
+
+    about:
+      $("sectionAbout").checked,
+
+    workflow:
+      $("sectionWorkflow").checked,
+
+    contact:
+      $("sectionContact").checked
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert(
+    "Sections saved successfully ✓"
+  );
+
+}
+
+
+/* -------------------------
+   SEO
+------------------------- */
+
+function loadSeo() {
+
+  const seo =
+    portfolio.site.seo || {};
+
+  const social =
+    portfolio.site.social || {};
+
+
+  $("seoTitle").value =
+    seo.title || "";
+
+  $("seoDescription").value =
+    seo.description || "";
+
+  $("seoKeywords").value =
+    seo.keywords || "";
+
+  $("seoImage").value =
+    seo.image || "";
+
+
+  $("socialInstagram").value =
+    social.instagram || "";
+
+  $("socialYoutube").value =
+    social.youtube || "";
+
+  $("socialLinkedin").value =
+    social.linkedin || "";
+
+  $("socialWhatsapp").value =
+    social.whatsapp || "";
+
+  $("socialEmail").value =
+    social.email || "";
+
+}
+
+
+async function saveSeo() {
+
+  portfolio.site.seo = {
+
+    title:
+      $("seoTitle").value,
+
+    description:
+      $("seoDescription").value,
+
+    keywords:
+      $("seoKeywords").value,
+
+    image:
+      $("seoImage").value
+
+  };
+
+
+  portfolio.site.social = {
+
+    instagram:
+      $("socialInstagram").value,
+
+    youtube:
+      $("socialYoutube").value,
+
+    linkedin:
+      $("socialLinkedin").value,
+
+    whatsapp:
+      $("socialWhatsapp").value,
+
+    email:
+      $("socialEmail").value
+
+  };
+
+
+  await saveKey(
+    "site",
+    portfolio.site
+  );
+
+
+  alert(
+    "SEO saved successfully ✓"
+  );
+
+}
+
+
+/* -------------------------
+   BACKUP
+------------------------- */
+
+function exportBackup() {
+
+  const data =
+    JSON.stringify(
+      portfolio,
+      null,
+      2
+    );
+
+
+  const blob =
+    new Blob(
+      [data],
+      {
+        type:
+          "application/json"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(blob);
+
+
+  const a =
+    document.createElement("a");
+
+
+  a.href = url;
+
+  a.download =
+    "zaid-portfolio-backup.json";
+
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+/* -------------------------
+   PUBLISH
+------------------------- */
+
+async function publish() {
+
+  const button =
+    $("publishBtn");
+
+  button.disabled = true;
+
+  button.textContent =
+    "Publishing...";
+
+
+  try {
+
+    await saveAll();
+
+    alert(
+      "Published successfully ✓"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Publish failed: " +
+      error.message
+    );
+
+  }
+
+
+  button.disabled = false;
+
+  button.textContent =
+    "Save & Publish";
+
+}
+
+
+/* -------------------------
+   NAVIGATION
+------------------------- */
+
+function setupNavigation() {
+
+  document
+    .querySelectorAll(
+      ".nav button"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const page =
+            button.dataset.page;
+
+
+          document
+            .querySelectorAll(
+              ".nav button"
+            )
+            .forEach(b =>
+              b.classList.remove(
+                "active"
+              )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          document
+            .querySelectorAll(
+              ".page"
+            )
+            .forEach(section =>
+              section.classList.remove(
+                "active"
+              )
+            );
+
+
+          const target =
+            $(page);
+
+
+          if (target) {
+
+            target.classList.add(
+              "active"
+            );
+
+          }
+
+        }
+      );
+
+    });
+
+}
+
+
+/* -------------------------
+   RANGE VALUES
+------------------------- */
+
+function updateRangeValues() {
+
+  const pairs = [
+
+    ["themeRadius", "themeRadiusValue", "px"],
+    ["themeBlur", "themeBlurValue", "px"],
+    ["themeShadow", "themeShadowValue", "%"],
+    ["themeGlow", "themeGlowValue", "%"],
+
+    ["typeHero", "typeHeroValue", "px"],
+    ["typeHeading", "typeHeadingValue", "px"],
+    ["typeBody", "typeBodyValue", "px"],
+    ["typeSpacing", "typeSpacingValue", "px"],
+
+    ["animDuration", "animDurationValue", "ms"],
+    ["animDelay", "animDelayValue", "ms"],
+    ["animDistance", "animDistanceValue", "px"],
+    ["animBlur", "animBlurValue", "px"],
+    ["animStagger", "animStaggerValue", "ms"],
+
+    ["layoutMaxWidth", "layoutMaxWidthValue", "px"],
+    ["layoutSectionGap", "layoutSectionGapValue", "px"]
+
+  ];
+
+
+  pairs.forEach(
+    ([input, output, unit]) => {
+
+      const i = $(input);
+
+      const o = $(output);
+
+      if (!i || !o) return;
+
+      o.textContent =
+        i.value + unit;
+
+    }
+  );
+
+}
+
+
+/* -------------------------
+   EVERYTHING
+------------------------- */
+
+function renderEverything() {
+
+  loadProfile();
+
+  renderProjects();
+
+  renderServices();
+
+  loadTheme();
+
+  loadTypography();
+
+  loadAnimations();
+
+  loadLayout();
+
+  loadSections();
+
+  loadSeo();
+
+
+  if (currentUser) {
+
+    $("currentAdminEmail")
+      .textContent =
+        currentUser.email || "";
+
+  }
+
+}
+
+
+/* -------------------------
+   EVENTS
+------------------------- */
+
+function setupEvents() {
+
+  $("loginBtn").addEventListener(
+    "click",
+    login
+  );
+
+
+  $("loginPassword")
+    .addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          login();
+
+        }
+
+      }
+    );
+
+
+  $("logoutBtn")
+    .addEventListener(
+      "click",
+      logout
+    );
+
+
+  $("logoutAllBtn")
+    .addEventListener(
+      "click",
+      logoutAll
+    );
+
+
+  $("publishBtn")
+    .addEventListener(
+      "click",
+      publish
+    );
+
+
+  $("saveProfile")
+    .addEventListener(
+      "click",
+      saveProfile
+    );
+
+
+  $("addProjectBtn")
+    .addEventListener(
+      "click",
+      openProjectForm
+    );
+
+
+  $("cancelProjectBtn")
+    .addEventListener(
+      "click",
+      closeProjectForm
+    );
+
+
+  $("saveProjectBtn")
+    .addEventListener(
+      "click",
+      saveProject
+    );
+
+
+  $("addServiceBtn")
+    .addEventListener(
+      "click",
+      addService
+    );
+
+
+  $("saveTheme")
+    .addEventListener(
+      "click",
+      saveTheme
+    );
+
+
+  $("saveTypography")
+    .addEventListener(
+      "click",
+      saveTypography
+    );
+
+
+  $("saveAnimations")
+    .addEventListener(
+      "click",
+      saveAnimations
+    );
+
+
+  $("saveLayout")
+    .addEventListener(
+      "click",
+      saveLayout
+    );
+
+
+  $("saveSections")
+    .addEventListener(
+      "click",
+      saveSections
+    );
+
+
+  $("saveSeo")
+    .addEventListener(
+      "click",
+      saveSeo
+    );
+
+
+  $("exportBackup")
+    .addEventListener(
+      "click",
+      exportBackup
+    );
+
+
+  document
+    .querySelectorAll(
+      'input[type="range"]'
+    )
+    .forEach(input => {
+
+      input.addEventListener(
+        "input",
+        updateRangeValues
+      );
+
+    });
+
+}
+
+
+/* -------------------------
+   START
+------------------------- */
+
+async function start() {
+
+  try {
+
+    initializeSupabase();
+
+    setupNavigation();
+
+    setupEvents();
+
+    await checkAuth();
+
+  } catch (error) {
+
+    console.error(error);
+
+    setMessage(
+      error.message ||
+      "Application failed to start.",
+      "error"
+    );
+
+  }
+
+}
+
+
+start();
+
+</script>
+
+</body>
+</html>
