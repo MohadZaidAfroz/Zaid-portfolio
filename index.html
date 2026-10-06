@@ -257,7 +257,20 @@ function applySEO(s={}){
 function render(d){
   d=d||{};
 
-  const s=d.site||fallback.site;
+  const rawSite = d.site || {};
+const profile = rawSite.profile || {};
+
+const s = {
+  ...rawSite,
+
+  name: profile.name || rawSite.name || fallback.site.name,
+  role: profile.role || rawSite.role || fallback.site.role,
+  hero: profile.hero || rawSite.hero || fallback.site.hero,
+  bio: profile.bio || rawSite.bio || fallback.site.bio,
+  about: profile.about || rawSite.about || fallback.site.about,
+
+  stats: rawSite.stats || fallback.site.stats
+};
 
   if($("siteLogo"))
     $("siteLogo").innerHTML=esc(s.name||fallback.site.name)+"<span>.</span>";
