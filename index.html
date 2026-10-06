@@ -309,7 +309,7 @@ const s = {
   $("projects").innerHTML=(d.projects||[])
     .filter(p=>p.visible!==false)
     .map(p=>{
-      const url=p.url||"";
+      const url=p.video||p.url||"";
       const image=p.image||"";
 
       return `
