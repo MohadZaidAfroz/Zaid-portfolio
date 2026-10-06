@@ -2200,33 +2200,23 @@ async function loadPortfolio() {
 
 async function saveKey(key, content) {
 
-  const {
-  const {
-  error
-} = await db
-  .from("portfolio_content")
-  .upsert(
-    {
-      key,
-      value: content
-    },
-    {
-      onConflict: "key"
-    }
-  );
-
-if (error) {
-  throw error;
-}
+  const { error } = await db
+    .from("portfolio_content")
+    .upsert(
+      {
+        key: key,
+        value: content
+      },
+      {
+        onConflict: "key"
+      }
+    );
 
   if (error) {
-
     throw error;
-
   }
 
 }
-
 
 async function saveAll() {
 
