@@ -2155,21 +2155,21 @@ async function loadPortfolio() {
       if (row.key === "site") {
 
         portfolio.site =
-          row.content || {};
+  row.value || {};
 
       }
 
       if (row.key === "projects") {
 
         portfolio.projects =
-          row.content || [];
+  row.value || [];
 
       }
 
       if (row.key === "services") {
 
         portfolio.services =
-          row.content || [];
+  row.value || [];
 
       }
 
@@ -2201,19 +2201,23 @@ async function loadPortfolio() {
 async function saveKey(key, content) {
 
   const {
-    error
-  } = await db
-    .from("portfolio_content")
-    .upsert(
-      {
-        key,
-        content
-      },
-      {
-        onConflict: "key"
-      }
-    );
+  const {
+  error
+} = await db
+  .from("portfolio_content")
+  .upsert(
+    {
+      key,
+      value: content
+    },
+    {
+      onConflict: "key"
+    }
+  );
 
+if (error) {
+  throw error;
+}
 
   if (error) {
 
