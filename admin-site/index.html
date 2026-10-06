@@ -1,1351 +1,1149 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZAID — Portfolio Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../config.js"></script>
+  <title>ZAID — Portfolio Admin</title>
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:#070707;
-  color:#f7f4f2;
-  font-family:Inter,Arial,sans-serif;
-}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.login{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:20px;
-}
-.loginbox,.panel,.card{
-  background:#111;
-  border:1px solid #292929;
-  border-radius:16px;
-}
-.loginbox{
-  width:min(420px,100%);
-  padding:28px;
-}
-h1,h2,h3{margin-top:0}
-.muted{color:#96908e}
-.field{margin:14px 0}
-label{
-  display:block;
-  margin-bottom:7px;
-  color:#aaa;
-  font-size:13px;
-}
-input,textarea,select{
-  width:100%;
-  padding:12px;
-  color:#fff;
-  background:#0a0a0a;
-  border:1px solid #303030;
-  border-radius:10px;
-  outline:none;
-}
-textarea{min-height:110px;resize:vertical}
-input:focus,textarea:focus,select:focus{
-  border-color:#ff263b;
-}
-.btn{
-  border:0;
-  padding:11px 16px;
-  border-radius:10px;
-  color:#fff;
-  background:#ff263b;
-  font-weight:700;
-}
-.btn.dark{
-  background:#1b1b1b;
-  border:1px solid #333;
-}
-.btn.green{background:#16864a}
-.btn.red{background:#a71929}
-.app{display:none;min-height:100vh}
-header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:rgba(7,7,7,.94);
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid #222;
-  padding:14px;
-}
-.top{
-  max-width:1400px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  overflow:auto;
-}
-.brand{
-  font-size:20px;
-  font-weight:900;
-  margin-right:15px;
-}
-.nav{
-  display:flex;
-  gap:7px;
-}
-.nav button{
-  white-space:nowrap;
-  background:#101010;
-  color:#aaa;
-  border:1px solid #292929;
-  padding:9px 12px;
-  border-radius:9px;
-}
-.nav button.active{
-  background:#ff263b;
-  color:#fff;
-  border-color:#ff263b;
-}
-main{
-  max-width:1400px;
-  margin:auto;
-  padding:25px 16px 70px;
-}
-.page{display:none}
-.page.active{display:block}
-.title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:20px;
-}
-.actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:15px;
-}
-.card{
-  padding:18px;
-}
-.full{grid-column:1/-1}
-.statgrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-.stat{
-  padding:18px;
-  background:#111;
-  border:1px solid #292929;
-  border-radius:14px;
-}
-.stat b{
-  display:block;
-  font-size:25px;
-  margin-top:5px;
-}
-.row{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.check{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.check input{width:auto}
-.toast{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  z-index:99;
-  background:#171717;
-  border:1px solid #333;
-  padding:13px 17px;
-  border-radius:10px;
-  opacity:0;
-  transform:translateY(15px);
-  pointer-events:none;
-  transition:.2s;
-}
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
-}
-.status{
-  padding:10px 13px;
-  border-radius:9px;
-  background:#111;
-  border:1px solid #292929;
-  color:#aaa;
-}
-.project,.service{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  align-items:center;
-  padding:14px 0;
-  border-bottom:1px solid #252525;
-}
-.project:last-child,.service:last-child{border-bottom:0}
-.badge{
-  display:inline-block;
-  padding:5px 8px;
-  border-radius:20px;
-  background:#201014;
-  color:#ff6976;
-  font-size:11px;
-}
-@media(max-width:800px){
-  .grid{grid-template-columns:1fr}
-  .statgrid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:500px){
-  .title{align-items:flex-start;flex-direction:column}
-  .statgrid{grid-template-columns:1fr 1fr}
-}
-</style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../config.js"></script>
+
+  <style>
+    :root{
+      --admin-bg:#070707;
+      --admin-surface:#111111;
+      --admin-card:#151515;
+      --admin-border:#292929;
+      --admin-text:#f5f5f5;
+      --admin-muted:#999;
+      --admin-accent:#ff263b;
+      --admin-radius:16px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      background:var(--admin-bg);
+      color:var(--admin-text);
+      font-family:Inter,Arial,sans-serif;
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    /* LOGIN */
+
+    #loginScreen{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .login-card{
+      width:min(440px,100%);
+      background:var(--admin-surface);
+      border:1px solid var(--admin-border);
+      border-radius:22px;
+      padding:30px;
+      box-shadow:0 30px 80px rgba(0,0,0,.45);
+    }
+
+    .login-logo{
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:-1px;
+      margin-bottom:8px;
+    }
+
+    .login-logo span{
+      color:var(--admin-accent);
+    }
+
+    .login-subtitle{
+      color:var(--admin-muted);
+      margin-bottom:25px;
+    }
+
+    /* APP */
+
+    #app{
+      display:none;
+      min-height:100vh;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(7,7,7,.86);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--admin-border);
+    }
+
+    .topbar-inner{
+      max-width:1500px;
+      margin:auto;
+      padding:13px 18px;
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .brand{
+      font-size:20px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .brand span{
+      color:var(--admin-accent);
+    }
+
+    .nav{
+      display:flex;
+      gap:7px;
+      overflow-x:auto;
+      flex:1;
+      scrollbar-width:none;
+    }
+
+    .nav::-webkit-scrollbar{
+      display:none;
+    }
+
+    .nav button{
+      white-space:nowrap;
+      background:#101010;
+      color:#aaa;
+      border:1px solid #292929;
+      border-radius:10px;
+      padding:10px 14px;
+    }
+
+    .nav button:hover{
+      color:#fff;
+      border-color:#444;
+    }
+
+    .nav button.active{
+      background:var(--admin-accent);
+      border-color:var(--admin-accent);
+      color:#fff;
+    }
+
+    .logout-top{
+      white-space:nowrap;
+    }
+
+    main{
+      width:min(1500px,100%);
+      margin:auto;
+      padding:30px 18px 80px;
+    }
+
+    .page{
+      display:none;
+    }
+
+    .page.active{
+      display:block;
+    }
+
+    .page-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      margin-bottom:25px;
+    }
+
+    .page-title h1,
+    .page-title h2{
+      margin:0 0 7px;
+      font-size:clamp(28px,4vw,42px);
+      letter-spacing:-1px;
+    }
+
+    .muted{
+      color:var(--admin-muted);
+    }
+
+    /* CARDS */
+
+    .card{
+      background:var(--admin-card);
+      border:1px solid var(--admin-border);
+      border-radius:var(--admin-radius);
+      padding:20px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .full{
+      grid-column:1/-1;
+    }
+
+    /* FORMS */
+
+    .field{
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      color:#bbb;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+
+    input,
+    textarea,
+    select{
+      width:100%;
+      background:#090909;
+      border:1px solid #303030;
+      color:#fff;
+      border-radius:11px;
+      padding:13px 14px;
+      outline:none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus{
+      border-color:var(--admin-accent);
+      box-shadow:0 0 0 3px rgba(255,38,59,.1);
+    }
+
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    input[type="color"]{
+      height:48px;
+      padding:5px;
+    }
+
+    input[type="range"]{
+      padding:0;
+      accent-color:var(--admin-accent);
+    }
+
+    input[type="checkbox"]{
+      width:auto;
+      accent-color:var(--admin-accent);
+    }
+
+    .check{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#ccc;
+    }
+
+    /* BUTTONS */
+
+    .actions{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:0;
+      border-radius:11px;
+      padding:12px 17px;
+      background:var(--admin-accent);
+      color:#fff;
+      font-weight:700;
+    }
+
+    .btn:hover{
+      filter:brightness(1.08);
+    }
+
+    .btn.dark{
+      background:#1a1a1a;
+      border:1px solid #333;
+    }
+
+    .btn.danger{
+      background:#a71828;
+    }
+
+    .btn.success{
+      background:#16864a;
+    }
+
+    /* DASHBOARD */
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .stat-card{
+      background:var(--admin-card);
+      border:1px solid var(--admin-border);
+      border-radius:var(--admin-radius);
+      padding:20px;
+    }
+
+    .stat-card small{
+      color:var(--admin-muted);
+    }
+
+    .stat-card strong{
+      display:block;
+      font-size:28px;
+      margin-top:8px;
+    }
+
+    /* PROJECTS */
+
+    .project-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .project-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      padding:16px;
+      background:#101010;
+      border:1px solid #292929;
+      border-radius:13px;
+    }
+
+    .project-info{
+      min-width:0;
+    }
+
+    .project-title{
+      font-weight:800;
+      font-size:17px;
+      margin-bottom:5px;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:20px;
+      font-size:11px;
+      background:#261015;
+      color:#ff6c79;
+      margin-right:5px;
+    }
+
+    .project-description{
+      color:#888;
+      margin-top:7px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:700px;
+    }
+
+    .project-form{
+      display:none;
+      margin-bottom:18px;
+    }
+
+    .project-form.show{
+      display:block;
+    }
+
+    .upload-status{
+      margin-top:8px;
+      color:#aaa;
+      font-size:13px;
+    }
+
+    /* SERVICES */
+
+    .service-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .service-row{
+      background:#101010;
+      border:1px solid #292929;
+      border-radius:13px;
+      padding:16px;
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      align-items:center;
+    }
+
+    .service-name{
+      font-weight:800;
+    }
+
+    /* RANGE */
+
+    .range-row{
+      display:grid;
+      grid-template-columns:1fr 70px;
+      align-items:center;
+      gap:12px;
+    }
+
+    .range-value{
+      color:#aaa;
+      text-align:right;
+    }
+
+    /* SECTIONS */
+
+    .section-option{
+      padding:15px;
+      border-bottom:1px solid #292929;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .section-option:last-child{
+      border-bottom:0;
+    }
+
+    /* TOAST */
+
+    #toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:9999;
+      background:#181818;
+      border:1px solid #383838;
+      color:#fff;
+      padding:13px 17px;
+      border-radius:11px;
+      opacity:0;
+      transform:translateY(15px);
+      pointer-events:none;
+      transition:.25s;
+    }
+
+    #toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .hint{
+      color:#777;
+      font-size:12px;
+      margin-top:7px;
+      line-height:1.5;
+    }
+
+    @media(max-width:900px){
+
+      .topbar-inner{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .nav{
+        width:100%;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .stats-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .project-row,
+      .service-row{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .project-description{
+        max-width:100%;
+      }
+
+      .logout-top{
+        display:none;
+      }
+    }
+
+    @media(max-width:520px){
+
+      main{
+        padding:22px 13px 60px;
+      }
+
+      .card{
+        padding:16px;
+      }
+
+      .stats-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .page-title{
+        flex-direction:column;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="login" class="login">
-  <div class="loginbox">
-    <h1>ZAID<span style="color:#ff263b">.</span></h1>
-    <p class="muted">Portfolio Admin Panel</p>
+
+<div id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="login-logo">
+      ZAID<span>.</span>
+    </div>
+
+    <div class="login-subtitle">
+      Portfolio Control Center
+    </div>
 
     <div class="field">
       <label>Email</label>
-      <input id="loginEmail" type="email" placeholder="Admin email">
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="Admin email"
+        autocomplete="email"
+      >
     </div>
 
     <div class="field">
       <label>Password</label>
-      <input id="loginPassword" type="password" placeholder="Password">
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+      >
     </div>
 
-    <button class="btn" id="loginBtn">Login</button>
+    <button class="btn" id="loginBtn">
+      Login
+    </button>
 
-    <p id="loginMsg" class="muted"></p>
+    <p id="loginMessage" class="muted"></p>
+
   </div>
+
 </div>
+
 
 <!-- APP -->
-<div id="app" class="app">
 
-<header>
-  <div class="top">
-    <div class="brand">ZAID ADMIN</div>
+<div id="app">
 
-    <div class="nav">
-      <button data-page="dashboard" class="active">Dashboard</button>
-      <button data-page="profile">Profile</button>
-      <button data-page="projects">Projects</button>
-      <button data-page="services">Services</button>
-      <button data-page="theme">Theme</button>
-      <button data-page="type">Typography</button>
-      <button data-page="anim">Animations</button>
-      <button data-page="layout">Layout</button>
-      <button data-page="sections">Sections</button>
-      <button data-page="seo">SEO</button>
-      <button data-page="security">Security</button>
-      <button data-page="backup">Backup</button>
-    </div>
-  </div>
-</header>
+  <header class="topbar">
 
-<main>
+    <div class="topbar-inner">
 
-<!-- DASHBOARD -->
-<section class="page active" id="dashboard">
-  <div class="title">
-    <div>
-      <h2>Dashboard</h2>
-      <p class="muted">Control your complete portfolio.</p>
-    </div>
-
-    <div class="actions">
-      <button class="btn green" id="publishBtn">Save & Publish</button>
-      <button class="btn dark" id="logoutBtn">Logout</button>
-    </div>
-  </div>
-
-  <div class="statgrid">
-    <div class="stat">
-      <span class="muted">Database</span>
-      <b id="dbStatus">...</b>
-    </div>
-
-    <div class="stat">
-      <span class="muted">Projects</span>
-      <b id="projectCount">0</b>
-    </div>
-
-    <div class="stat">
-      <span class="muted">Clients</span>
-      <b id="clientCount">—</b>
-    </div>
-
-    <div class="stat">
-      <span class="muted">Admin</span>
-      <b>ONLINE</b>
-    </div>
-  </div>
-</section>
-
-<!-- PROFILE -->
-<section class="page" id="profile">
-  <div class="title">
-    <div>
-      <h2>Profile / Hero</h2>
-      <p class="muted">Edit your main portfolio information.</p>
-    </div>
-    <button class="btn saveBtn" data-key="site">Save</button>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="field">
-        <label>Name</label>
-        <input id="profileName">
+      <div class="brand">
+        ZAID<span>.</span> ADMIN
       </div>
 
-      <div class="field">
-        <label>Role</label>
-        <input id="profileRole">
-      </div>
+      <nav class="nav">
 
-      <div class="field">
-        <label>Hero Text</label>
-        <textarea id="profileHero"></textarea>
-      </div>
+        <button class="active" data-page="dashboard">
+          Dashboard
+        </button>
 
-      <div class="field">
-        <label>Bio</label>
-        <textarea id="profileBio"></textarea>
-      </div>
-    </div>
+        <button data-page="profile">
+          Profile
+        </button>
 
-    <div class="card">
-      <h3>Stats</h3>
+        <button data-page="projects">
+          Projects
+        </button>
 
-      <div class="field">
-        <label>Projects</label>
-        <input id="statProjects">
-      </div>
+        <button data-page="services">
+          Services
+        </button>
 
-      <div class="field">
-        <label>Clients</label>
-        <input id="statClients">
-      </div>
+        <button data-page="theme">
+          Theme
+        </button>
 
-      <div class="field">
-        <label>Years</label>
-        <input id="statYears">
-      </div>
+        <button data-page="typography">
+          Typography
+        </button>
 
-      <div class="field">
-        <label>Views</label>
-        <input id="statViews">
-      </div>
-    </div>
-  </div>
-</section>
+        <button data-page="animations">
+          Animations
+        </button>
 
-<!-- PROJECTS -->
-<section class="page" id="projects">
-  <div class="title">
-    <div>
-      <h2>Projects</h2>
-      <p class="muted">Manage portfolio projects.</p>
-    </div>
+        <button data-page="layout">
+          Layout
+        </button>
 
-    <button class="btn" id="addProjectBtn" type="button">+ Add Project</button>
-  </div>
+        <button data-page="sections">
+          Sections
+        </button>
 
-  <div class="card" id="projectForm" style="display:none">
-    <h3>Add / Edit Project</h3>
+        <button data-page="seo">
+          SEO
+        </button>
 
-    <div class="grid">
-      <div class="field">
-        <label>Project Title</label>
-        <input id="projectTitle" placeholder="Project title">
-      </div>
+        <button data-page="security">
+          Security
+        </button>
 
-      <div class="field">
-        <label>Category</label>
-        <input id="projectCategory" placeholder="Motion Graphics">
-      </div>
+        <button data-page="backup">
+          Backup
+        </button>
 
-      <div class="field">
-        <label>Thumbnail URL</label>
-        <input id="projectImage" placeholder="https://...">
-      </div>
+      </nav>
 
-      <div class="field">
-  <label>Project Video</label>
-
-  <input
-    id="projectVideo"
-    type="file"
-    accept="video/mp4,video/webm,video/quicktime"
-  >
-
-  <small class="muted">
-    Select a video from your phone or computer.
-    MP4, WebM or MOV
-  </small>
-
-  <div
-    id="videoUploadStatus"
-    class="muted"
-    style="margin-top:8px;"
-  ></div>
-</div>
-      
-
-<div class="field">
-  <label>Description</label>
-
-  <textarea
-    id="projectDescription"
-    rows="4"
-    placeholder="Describe this project..."
-  ></textarea>
-</div>
-    <div class="actions">
-      <button class="btn primary" id="saveProjectBtn" type="button">
-        Save Project
+      <button class="btn dark logout-top" id="logoutBtn">
+        Logout
       </button>
 
-      <button class="btn" id="cancelProjectBtn" type="button">
-        Cancel
-      </button>
-    </div>
-  </div>
-
-  <div class="card" id="projectList"></div>
-</section>
-
-<!-- SERVICES -->
-<section class="page" id="services">
-  <div class="title">
-    <div>
-      <h2>Services</h2>
-      <p class="muted">Manage your services.</p>
     </div>
 
-    <button class="btn" id="addServiceBtn">+ Add Service</button>
-  </div>
+  </header>
 
-  <div class="card" id="serviceList"></div>
 
-  <br>
-  <button class="btn" id="saveServicesBtn">Save Services</button>
-</section>
+  <main>
 
-<!-- THEME -->
-<section class="page" id="theme">
-  <div class="title">
-    <div>
-      <h2>Theme</h2>
-      <p class="muted">Control colors, radius and visual style.</p>
-    </div>
+    <!-- DASHBOARD -->
 
-    <button class="btn saveBtn" data-key="theme">Save Theme</button>
-  </div>
+    <section class="page active" id="dashboard">
 
-  <div class="grid">
-    <div class="card">
-      <div class="field">
-        <label>Background</label>
-        <input id="themeBg" type="color" value="#070707">
+      <div class="page-title">
+
+        <div>
+          <h1>Dashboard</h1>
+          <div class="muted">
+            Control your complete portfolio from one place.
+          </div>
+        </div>
+
+        <button class="btn success" id="publishBtn">
+          Save & Publish
+        </button>
+
       </div>
 
-      <div class="field">
-        <label>Accent</label>
-        <input id="themeAccent" type="color" value="#ff263b">
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <small>Database</small>
+          <strong id="databaseStatus">
+            Checking...
+          </strong>
+        </div>
+
+        <div class="stat-card">
+          <small>Projects</small>
+          <strong id="projectCount">
+            0
+          </strong>
+        </div>
+
+        <div class="stat-card">
+          <small>Services</small>
+          <strong id="serviceCount">
+            0
+          </strong>
+        </div>
+
+        <div class="stat-card">
+          <small>Admin</small>
+          <strong>
+            SECURE
+          </strong>
+        </div>
+
       </div>
 
-      <div class="field">
-        <label>Text</label>
-        <input id="themeText" type="color" value="#f7f4f2">
+      <br>
+
+      <div class="card">
+
+        <h3>Portfolio CMS</h3>
+
+        <p class="muted">
+          All website content is stored in Supabase.
+          Changes made here are used by the public portfolio.
+        </p>
+
       </div>
 
-      <div class="field">
-        <label>Muted Text</label>
-        <input id="themeMuted" type="color" value="#96908e">
-      </div>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="field">
-        <label>Card Radius</label>
-        <input id="themeRadius" type="range" min="0" max="40" value="16">
-      </div>
 
-      <div class="field">
-        <label>Blur</label>
-        <input id="themeBlur" type="range" min="0" max="30" value="15">
-      </div>
+    <!-- PROFILE -->
 
-      <div class="field">
-        <label>Theme Preset</label>
-        <select id="themePreset">
-          <option value="cinematic-red">Cinematic Red</option>
-          <option value="midnight-blue">Midnight Blue</option>
-          <option value="pure-black">Pure Black</option>
-          <option value="minimal-white">Minimal White</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</section>
+    <section class="page" id="profile">
 
-<!-- TYPOGRAPHY -->
-<section class="page" id="type">
-  <div class="title">
-    <div>
-      <h2>Typography</h2>
-      <p class="muted">Control website typography.</p>
-    </div>
+      <div class="page-title">
 
-    <button class="btn saveBtn" data-key="typography">Save Typography</button>
-  </div>
+        <div>
+          <h1>Profile</h1>
+          <div class="muted">
+            Manage your hero section and profile information.
+          </div>
+        </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="field">
-        <label>Font Family</label>
-        <select id="fontFamily">
-          <option>Inter</option>
-          <option>Manrope</option>
-          <option>Plus Jakarta Sans</option>
-          <option>DM Sans</option>
-          <option>Space Grotesk</option>
-        </select>
+        <button class="btn" id="saveProfile">
+          Save Profile
+        </button>
+
       </div>
 
-      <div class="field">
-        <label>Font Weight</label>
-        <select id="fontWeight">
-          <option value="400">400 — Regular</option>
-          <option value="500">500 — Medium</option>
-          <option value="600">600 — Semibold</option>
-          <option value="700">700 — Bold</option>
-          <option value="800">800 — Extra Bold</option>
-        </select>
-      </div>
-    </div>
+      <div class="grid">
 
-    <div class="card">
-      <div class="field">
-        <label>Letter Spacing</label>
-        <input id="letterSpacing" type="range" min="-2" max="5" step=".1" value="0">
-      </div>
+        <div class="card">
 
-      <div class="field">
-        <label>Line Height</label>
-        <input id="lineHeight" type="range" min="1" max="2" step=".05" value="1.4">
-      </div>
+          <div class="field">
+            <label>Name</label>
+            <input id="profileName">
+          </div>
 
-      <div class="field">
-        <label>Base Font Size</label>
-        <input id="baseFontSize" type="range" min="12" max="24" value="16">
-      </div>
-    </div>
-  </div>
-</section>
+          <div class="field">
+            <label>Role</label>
+            <input id="profileRole">
+          </div>
 
-<!-- ANIMATIONS -->
-<section class="page" id="anim">
-  <div class="title">
-    <div>
-      <h2>Animations</h2>
-      <p class="muted">Control scroll and entrance animations.</p>
-    </div>
+          <div class="field">
+            <label>Hero Heading</label>
+            <textarea id="profileHero"></textarea>
+          </div>
 
-    <button class="btn saveBtn" data-key="animations">Save Animations</button>
-  </div>
+          <div class="field">
+            <label>Bio</label>
+            <textarea id="profileBio"></textarea>
+          </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="field">
-        <label>Animation Type</label>
-        <select id="animType">
-          <option value="fade-blur">Fade + Blur</option>
-          <option value="fade">Fade</option>
-          <option value="slide-up">Slide Up</option>
-          <option value="slide-left">Slide Left</option>
-          <option value="slide-right">Slide Right</option>
-          <option value="scale">Scale</option>
-          <option value="zoom">Zoom</option>
-        </select>
-      </div>
+          <div class="field">
+            <label>About</label>
+            <textarea id="profileAbout"></textarea>
+          </div>
 
-      <div class="field">
-        <label>Duration (ms)</label>
-        <input id="animDuration" type="range" min="100" max="2000" step="50" value="700">
-      </div>
-    </div>
+        </div>
 
-    <div class="card">
-      <div class="field">
-        <label>Delay (ms)</label>
-        <input id="animDelay" type="range" min="0" max="1000" step="50" value="0">
+
+        <div class="card">
+
+          <h3>Statistics</h3>
+
+          <div class="field">
+            <label>Projects</label>
+            <input id="statProjects">
+          </div>
+
+          <div class="field">
+            <label>Clients</label>
+            <input id="statClients">
+          </div>
+
+          <div class="field">
+            <label>Years</label>
+            <input id="statYears">
+          </div>
+
+          <div class="field">
+            <label>Views</label>
+            <input id="statViews">
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="field">
-        <label>Stagger (ms)</label>
-        <input id="animStagger" type="range" min="0" max="500" step="25" value="75">
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section class="page" id="projects">
+
+      <div class="page-title">
+
+        <div>
+          <h1>Projects</h1>
+          <div class="muted">
+            Add and manage your portfolio projects.
+          </div>
+        </div>
+
+        <button class="btn" id="addProjectBtn">
+          + Add Project
+        </button>
+
       </div>
 
-      <div class="field">
-        <label>Blur Amount</label>
-        <input id="animBlur" type="range" min="0" max="30" value="10">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LAYOUT -->
-<section class="page" id="layout">
-  <div class="title">
-    <div>
-      <h2>Layout</h2>
-      <p class="muted">Control spacing and responsive layout.</p>
-    </div>
-
-    <button class="btn saveBtn" data-key="layout">Save Layout</button>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="field">
-        <label>Container Width</label>
-        <input id="containerWidth" type="range" min="900" max="1800" value="1400">
-      </div>
-
-      <div class="field">
-        <label>Section Spacing</label>
-        <input id="sectionSpacing" type="range" min="20" max="200" value="80">
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="field">
-        <label>Mobile Padding</label>
-        <input id="mobilePadding" type="range" min="10" max="50" value="20">
-      </div>
-
-      <div class="field">
-        <label>Header Behaviour</label>
-        <select id="headerBehaviour">
-          <option value="sticky">Sticky</option>
-          <option value="normal">Normal</option>
-          <option value="hide-scroll">Hide on Scroll</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTIONS -->
-<section class="page" id="sections">
-  <div class="title">
-    <div>
-      <h2>Sections</h2>
-      <p class="muted">Show or hide website sections.</p>
-    </div>
-
-    <button class="btn saveBtn" data-key="sections">Save Sections</button>
-  </div>
-
-  <div class="card">
-    <label class="check">
-      <input id="showHero" type="checkbox" checked>
-      Hero
-    </label>
-
-    <br>
-
-    <label class="check">
-      <input id="showStats" type="checkbox" checked>
-      Stats
-    </label>
-
-    <br>
-
-    <label class="check">
-      <input id="showProjects" type="checkbox" checked>
-      Projects
-    </label>
-
-    <br>
-
-    <label class="check">
-      <input id="showAbout" type="checkbox" checked>
-      About
-    </label>
-
-    <br>
-
-    <label class="check">
-      <input id="showServices" type="checkbox" checked>
-      Services
-    </label>
-
-    <br>
-
-    <label class="check">
-      <input id="showContact" type="checkbox" checked>
-      Contact
-    </label>
-  </div>
-</section>
-
-<!-- SEO -->
-<section class="page" id="seo">
-  <div class="title">
-    <div>
-      <h2>SEO & Social</h2>
-      <p class="muted">Website title, description and social links.</p>
-    </div>
-
-    <button class="btn saveBtn" data-key="seo">Save SEO</button>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="field">
-        <label>SEO Title</label>
-        <input id="seoTitle">
-      </div>
-
-      <div class="field">
-        <label>Description</label>
-        <textarea id="seoDescription"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Keywords</label>
-        <input id="seoKeywords">
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="field">
-        <label>Instagram</label>
-        <input id="instagram">
-      </div>
-
-      <div class="field">
-        <label>YouTube</label>
-        <input id="youtube">
-      </div>
-
-      <div class="field">
-        <label>LinkedIn</label>
-        <input id="linkedin">
-      </div>
-
-      <div class="field">
-        <label>Email</label>
-        <input id="contactEmail">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECURITY -->
-<section class="page" id="security">
-  <div class="title">
-    <div>
-      <h2>Security</h2>
-      <p class="muted">Supabase handles authentication.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <p>Logged in as:</p>
-    <b id="loggedEmail">—</b>
-    <br><br>
-    <button class="btn dark" id="securityLogout">Logout</button>
-  </div>
-</section>
-
-<!-- BACKUP -->
-<section class="page" id="backup">
-  <div class="title">
-    <div>
-      <h2>Backup</h2>
-      <p class="muted">Export your current portfolio data.</p>
-    </div>
-
-    <button class="btn" id="exportBtn">Export JSON</button>
-  </div>
-
-  <div class="card">
-    <p class="muted">
-      Export creates a backup of the current data loaded from Supabase.
-    </p>
-  </div>
-</section>
-
-</main>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script>
-let db=null;
-
-let content={
-  site:{},
-  projects:[],
-  services:[],
-  theme:{},
-  typography:{},
-  animations:{},
-  layout:{},
-  sections:{},
-  seo:{}
-};
-
-const $=id=>document.getElementById(id);
-
-function toast(message){
-  const t=$("toast");
-  t.textContent=message;
-  t.classList.add("show");
-  clearTimeout(window.toastTimer);
-  window.toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
-}
-
-function ready(){
-  return window.ZAID_CONFIG &&
-    ZAID_CONFIG.SUPABASE_URL &&
-    ZAID_CONFIG.SUPABASE_ANON_KEY &&
-    !ZAID_CONFIG.SUPABASE_URL.startsWith("YOUR_");
-}
-
-async function init(){
-  if(!ready()){
-    $("loginMsg").textContent="Supabase config not found.";
-    return;
-  }
-
-  db=supabase.createClient(
-    ZAID_CONFIG.SUPABASE_URL,
-    ZAID_CONFIG.SUPABASE_ANON_KEY
-  );
-
-  const {data:{session}}=await db.auth.getSession();
-
-  if(session){
-    showApp(session);
-  }
-}
-
-function showApp(session){
-  $("login").style.display="none";
-  $("app").style.display="block";
-  $("loggedEmail").textContent=session.user.email||"Admin";
-  connect();
-}
-
-async function login(){
-  if(!ready()){
-    $("loginMsg").textContent="Supabase configuration missing.";
-    return;
-  }
-
-  if(!db){
-    db=supabase.createClient(
-      ZAID_CONFIG.SUPABASE_URL,
-      ZAID_CONFIG.SUPABASE_ANON_KEY
-    );
-  }
-
-  const email=$("loginEmail").value.trim();
-  const password=$("loginPassword").value;
-
-  $("loginMsg").textContent="Logging in...";
-
-  const {data,error}=await db.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if(error){
-    $("loginMsg").textContent=error.message;
-    return;
-  }
-
-  showApp(data.session);
-}
-
-async function connect(){
-  if(!db)return;
-
-  $("dbStatus").textContent="CONNECTING";
-
-  const {data,error}=await db
-    .from("portfolio_content")
-    .select("key,value");
-
-  if(error){
-    console.error(error);
-    $("dbStatus").textContent="ERROR";
-    toast("Database error: "+error.message);
-    return;
-  }
-
-  content={
-    site:{},
-    projects:[],
-    services:[],
-    theme:{},
-    typography:{},
-    animations:{},
-    layout:{},
-    sections:{},
-    seo:{}
-  };
-
-  (data||[]).forEach(row=>{
-    content[row.key]=row.value;
-  });
-
-  $("dbStatus").textContent="ONLINE";
-
-  loadAll();
-}
-
-async function saveKey(key,value){
-  if(!db){
-    toast("Database not connected");
-    return false;
-  }
-
-  const {data:{session}}=await db.auth.getSession();
-
-  if(!session){
-    toast("Session expired — login again");
-    return false;
-  }
-
-  const {error}=await db
-    .from("portfolio_content")
-    .upsert(
-      {
-        key:key,
-        value:value,
-        updated_at:new Date().toISOString()
-      },
-      {onConflict:"key"}
-    );
-
-  if(error){
-    console.error(error);
-    toast("Save failed: "+error.message);
-    return false;
-  }
-
-  content[key]=value;
-  toast(key+" saved successfully ✓");
-  return true;
-}
-/* PROJECT CRUD */
-
-let editingProjectIndex = -1;
-
-function renderProjects(){
-  const box = $("projectList");
-  if(!box) return;
-
-  if(!content.projects || !content.projects.length){
-    box.innerHTML = '<p class="muted">No projects added yet.</p>';
-    return;
-  }
-
-  box.innerHTML = content.projects.map((p,i)=>`
-    <div class="project">
-      <div>
-        <strong>${esc(p.title || "Untitled Project")}</strong>
-        <div class="muted">${esc(p.category || "")}</div>
-        <small>${esc(p.description || "")}</small>
+
+      <div class="card project-form" id="projectForm">
+
+        <h2 id="projectFormTitle">
+          Add Project
+        </h2>
+
+        <div class="grid">
+
+          <div class="field">
+
+            <label>
+              Project Title
+            </label>
+
+            <input
+              id="projectTitle"
+              placeholder="Project title"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Category
+            </label>
+
+            <input
+              id="projectCategory"
+              placeholder="Motion Graphics"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Thumbnail URL
+            </label>
+
+            <input
+              id="projectImage"
+              placeholder="https://..."
+            >
+
+            <div class="hint">
+              Optional. Used as video poster/thumbnail.
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Project Video
+            </label>
+
+            <input
+              id="projectVideo"
+              type="file"
+              accept="video/mp4,video/webm,video/quicktime"
+            >
+
+            <div class="hint">
+              MP4, WebM or MOV.
+              When editing an existing project,
+              you can leave this empty to keep the existing video.
+            </div>
+
+            <div
+              id="videoUploadStatus"
+              class="upload-status"
+            ></div>
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Description
+            </label>
+
+            <textarea
+              id="projectDescription"
+              placeholder="Describe this project..."
+            ></textarea>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="check">
+
+              <input
+                id="projectVisible"
+                type="checkbox"
+                checked
+              >
+
+              Visible on website
+
+            </label>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="check">
+
+              <input
+                id="projectFeatured"
+                type="checkbox"
+              >
+
+              Featured project
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <div class="actions">
+
+          <button
+            class="btn"
+            id="saveProjectBtn"
+          >
+            Save Project
+          </button>
+
+          <button
+            class="btn dark"
+            id="cancelProjectBtn"
+          >
+            Cancel
+          </button>
+
+        </div>
+
       </div>
 
-      <div class="actions">
-        <button class="btn" onclick="editProject(${i})">Edit</button>
-        <button class="btn" onclick="deleteProject(${i})">Delete</button>
+
+      <div class="card">
+
+        <div
+          id="projectList"
+          class="project-list"
+        ></div>
+
       </div>
-    </div>
-  `).join("");
-}
 
-function clearProjectForm(){
+    </section>
 
-  $("projectTitle").value = "";
-  $("projectCategory").value = "";
-  $("projectImage").value = "";
 
-  const videoInput = $("projectVideo");
-  if(videoInput){
-    videoInput.value = "";
-  }
+    <!-- SERVICES -->
 
-  $("projectDescription").value = "";
+    <section class="page" id="services">
 
-  editingProjectIndex = -1;
+      <div class="page-title">
 
-  if($("projectForm")){
-    $("projectForm").style.display = "none";
-  }
-}
+        <div>
+          <h1>Services</h1>
+          <div class="muted">
+            Manage the services displayed on your website.
+          </div>
+        </div>
 
+        <button
+          class="btn"
+          id="addServiceBtn"
+        >
+          + Add Service
+        </button>
 
-function openProjectForm(){
+      </div>
 
-  editingProjectIndex = -1;
 
-  $("projectTitle").value = "";
-  $("projectCategory").value = "";
-  $("projectImage").value = "";
+      <div class="card">
 
-  const videoInput = $("projectVideo");
-  if(videoInput){
-    videoInput.value = "";
-  }
+        <div
+          id="serviceList"
+          class="service-list"
+        ></div>
 
-  $("projectDescription").value = "";
+      </div>
 
-  $("projectForm").style.display = "block";
+    </section>
 
-  $("projectTitle").focus();
-}
-  
-function editProject(index){
 
-  const p = content.projects[index];
+    <!-- THEME -->
 
-  if(!p) return;
+    <section class="page" id="theme">
 
-  editingProjectIndex = index;
+      <div class="page-title">
 
-  $("projectTitle").value = p.title || "";
-  $("projectCategory").value = p.category || "";
-  $("projectImage").value = p.image || "";
+        <div>
+          <h1>Theme System</h1>
+          <div class="muted">
+            Control the visual identity of your public website and admin preview.
+          </div>
+        </div>
 
-  const videoInput = $("projectVideo");
-  if(videoInput){
-    videoInput.value = "";
-  }
+        <button
+          class="btn"
+          id="saveTheme"
+        >
+          Save Theme
+        </button>
 
-  $("projectDescription").value = p.description || "";
+      </div>
 
-  $("projectForm").style.display = "block";
 
-  $("projectTitle").focus();
-}
+      <div class="grid">
 
-async function saveProject(){
+        <div class="card">
 
-  const videoInput = $("projectVideo");
-const videoFile = videoInput?.files?.[0];
+          <h3>Colors</h3>
 
-if(!videoFile){
-  toast("Please select a video");
-  return;
-}
+          <div class="field">
+            <label>Background</label>
+            <input id="themeBg" type="color">
+          </div>
 
-const extension = videoFile.name.split(".").pop().toLowerCase();
+          <div class="field">
+            <label>Surface / Card</label>
+            <input id="themeCard" type="color">
+          </div>
 
-const fileName =
-  Date.now() + "-" +
-  Math.random().toString(36).substring(2) +
-  "." + extension;
+          <div class="field">
+            <label>Border</label>
+            <input id="themeBorder" type="color">
+          </div>
 
-const filePath = "projects/" + fileName;
+          <div class="field">
+            <label>Accent</label>
+            <input id="themeAccent" type="color">
+          </div>
 
-const { error: uploadError } =
-  await db.storage
-  .from("portfolio-videos")
-    .upload(filePath, videoFile, {
-      contentType: videoFile.type,
-      upsert: false
-    });
+          <div class="field">
+            <label>Text</label>
+            <input id="themeText" type="color">
+          </div>
 
-if(uploadError){
-  console.error(uploadError);
-  toast("Video upload failed");
-  return;
-}
+          <div class="field">
+            <label>Muted Text</label>
+            <input id="themeMuted" type="color">
+          </div>
 
-const { data: publicData } =
-  db.storage
-  .from("portfolio-videos")
-  .getPublicUrl(filePath);
+        </div>
 
-const videoUrl = publicData.publicUrl;
-  const project = {
-    title: $("projectTitle").value.trim(),
-    category: $("projectCategory").value.trim(),
-    image: $("projectImage").value.trim(),
 
-    videoSource: "supabase",
-
-    url: videoUrl,
-
-    description: $("projectDescription").value.trim()
-  };
-
-  if(!project.title){
-    toast("Project title is required");
-    return;
-  }
-
-  if(editingProjectIndex === -1){
-
-    const newKey =
-      project.title.toLowerCase() + "|" +
-      project.url.toLowerCase();
-
-    const existingIndex = content.projects.findIndex(
-      (p) =>
-        (p.title || "").trim().toLowerCase() + "|" +
-        (p.url || "").trim().toLowerCase() === newKey
-    );
-
-    if(existingIndex !== -1){
-      content.projects[existingIndex] = project;
-    }else{
-      content.projects.push(project);
-    }
-
-  }else{
-
-    content.projects[editingProjectIndex] = project;
-
-  }
-
-  /* Remove duplicate projects */
-
-  const seen = new Set();
-
-  content.projects = content.projects.filter(p => {
-
-    const key =
-      (p.title || "").trim().toLowerCase() + "|" +
-      (p.url || "").trim().toLowerCase();
-
-    if(seen.has(key)){
-      return false;
-    }
-
-    seen.add(key);
-
-    return true;
-
-  });
-
-  const ok = await saveKey(
-    "projects",
-    content.projects
-  );
-
-  if(ok){
-
-    renderProjects();
-
-    clearProjectForm();
-
-    toast("Project saved successfully ✓");
-
-  }
-
-  }
-
-async function deleteProject(index){
-  if(!content.projects[index]) return;
-
-  if(!confirm("Delete this project?")) return;
-
-  content.projects.splice(index,1);
-
-  const ok = await saveKey("projects", content.projects);
-
-  if(ok){
-    renderProjects();
-    toast("Project deleted ✓");
-  }
-}
-
-/* PROJECT BUTTONS */
-
-$("addProjectBtn")?.addEventListener("click", openProjectForm);
-
-$("saveProjectBtn")?.addEventListener("click", saveProject);
-
-$("cancelProjectBtn")?.addEventListener("click", clearProjectForm);
-
-renderProjects();
-/* PROFILE */
-
-function getSite(){
-  return {
-    name:$("profileName").value,
-    role:$("profileRole").value,
-    hero:$("profileHero").value,
-    bio:$("profileBio").value,
-    stats:{
-      projects:$("statProjects").value,
-      clients:$("statClients").value,
-      years:$("statYears").value,
-      views:$("statViews").value
-    }
-  };
-}
-
-function loadSite(){
-  const s=content.site||{};
-  const stats=s.stats||{};
-
-  $("profileName").value=s.name||"ZAID";
-  $("profileRole"
-).value=s.role||"VIDEO EDITOR";
-  $("profileHero").value=s.hero||"";
-  $("profileBio").value=s.bio||"";
-  $("statProjects").value=stats.projects||"0";
-  $("statClients").value=stats.clients||"0";
-  $("statYears").value=stats.years||"0";
-  $("statViews").value=stats.views||"0";
-}
-
-function loadAll(){
-  loadSite();
-}
-
-function bind(){
-  $("loginBtn").addEventListener("click",login);
-
-  $("loginPassword").addEventListener("keydown",function(e){
-    if(e.key==="Enter") login();
-  });
-
-  document.querySelectorAll(".nav button").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
-      document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
-      btn.classList.add("active");
-      const page=document.getElementById(btn.dataset.page);
-      if(page) page.classList.add("active");
-    });
-  });
-
-  $("logoutBtn").addEventListener("click",async function(){
-    await db.auth.signOut();
-    location.reload();
-  });
-
-  $("securityLogout").addEventListener("click",async function(){
-    await db.auth.signOut();
-    location.reload();
-  });
-
-  $("publishBtn").addEventListener("click",function(){
-    toast("Changes are saved to Supabase ✓");
-  });
-
-  document.querySelectorAll(".saveBtn").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      const key=btn.dataset.key;
-
-      if(key==="site"){
-        saveKey("site",getSite());
-      }
-      else if(key==="theme"){
-        saveKey("theme",{
-          bg:$("themeBg").value,
-          accent:$("themeAccent").value,
-          text:$("themeText").value,
-          muted:$("themeMuted").value,
-          radius:$("themeRadius").value,
-          blur:$("themeBlur").value,
-          preset:$("themePreset").value
-        });
-      }
-      else if(key==="typography"){
-        saveKey("typography",{
-          fontFamily:$("fontFamily").value,
-          fontWeight:$("fontWeight").value,
-          letterSpacing:$("letterSpacing").value,
-          lineHeight:$("lineHeight").value,
-          baseFontSize:$("baseFontSize").value
-        });
-      }
-      else if(key==="animations"){
-        saveKey("animations",{
-          type:$("animType").value,
-          duration:$("animDuration").value,
-          delay:$("animDelay").value,
-          stagger:$("animStagger").value,
-          blur:$("animBlur").value
-        });
-      }
-      else if(key==="layout"){
-        saveKey("layout",{
-          containerWidth:$("containerWidth").value,
-          sectionSpacing:$("sectionSpacing").value,
-          mobilePadding:$("mobilePadding").value,
-          headerBehaviour:$("headerBehaviour").value
-        });
-      }
-      else if(key==="sections"){
-        saveKey("sections",{
-          hero:$("showHero").checked,
-          stats:$("showStats").checked,
-          projects:$("showProjects").checked,
-          about:$("showAbout").checked,
-          services:$("showServices").checked,
-          contact:$("showContact").checked
-        });
-      }
-      else if(key==="seo"){
-        saveKey("seo",{
-          title:$("seoTitle").value,
-          description:$("seoDescription").value,
-          keywords:$("seoKeywords").value,
-          instagram:$("instagram").value,
-          youtube:$("youtube").value,
-          linkedin:$("linkedin").value,
-          email:$("contactEmail").value
-        });
-      }
-    });
-  });
-}
-
-window.addEventListener("error",function(e){
-  const m=$("loginMsg");
-  if(m) m.textContent="Error: "+e.message;
-});
-
-bind();
-init();
-</script>
-</body>
-</html>
+        <div class="card">
+
+          <h3>Effects</h3>
+
+          <div class="field">
+
+            <label>
+              Border Radius
+            </label>
+
+            <div class="range-row">
+              <input
+                id="themeRadius"
+                type="range"
+                min="0"
+                max="40"
+              >
+              <span
+                class="range-value"
+                id="themeRadiusValue"
+              ></span>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Blur
+            </label>
+
+            <div class="range-row">
+              <input
+                id="themeBlur"
+                type="range"
+                min="0"
+                max="40"
+              >
+              <span
+                class="range-value"
+                id="themeBlurValue"
+              ></span>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Shadow
+            </label>
+
+            <div class="range-row">
+              <input
+                id="themeShadow"
+                type="range"
+                min="0"
+                max="100"
+              >
+              <span
+                class="range-value"
+                id="themeShadowValue"
+              ></span>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Glow
+              </body>
+            </html>
