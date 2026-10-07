@@ -2548,78 +2548,181 @@ async function saveProject() {
 
   if (videoFile) {
 
-    const status =
-      $("videoUploadStatus");
+  const status = $("videoUploadStatus");
 
-    status.textContent =
-      "Uploading video...";
+  status.textContent = "Preparing video upload...";
 
+  try {
 
-    try {
+    // Load TUS uploader
+    const { Upload } =
+      await import(
+        "https://cdn.jsdelivr.net/npm/tus-js-client@4/+esm"
+      );
 
-      const safeName =
-        videoFile.name
-          .replace(/[^a-zA-Z0-9._-]/g, "_");
+    const safeName =
+      videoFile.name
+        .replace(/[^a-zA-Z0-9._-]/g, "_");
 
+    const path =
+      "projects/" +
+      Date.now() +
+      "-" +
+      safeName;
 
-      const path =
-        "projects/" +
-        Date.now() +
-        "-" +
-        safeName;
+    // Get current Supabase login session
+    const { data: sessionData } =
+      await db.auth.getSession();
 
+    const accessToken =
+      sessionData.session?.access_token;
 
-      const {
-        error
-      } = await db.storage
-        .from("portfolio-videos")
-        .upload(
-          path,
-          videoFile,
-          {
-            upsert: false,
+    if (!accessToken) {
+      throw new Error(
+        "Admin session expired. Please login again."
+      );
+    }
+
+    const projectRef =
+      "onikbodimwtkqypjuoil";
+
+    const endpoint =
+      `https://${projectRef}.storage.supabase.co/storage/v1/upload/resumable`;
+
+    await new Promise(async (resolve, reject) => {
+
+      const upload =
+        new Upload(videoFile, {
+
+          endpoint: endpoint,
+
+          retryDelays: [
+            0,
+            3000,
+            5000,
+            10000,
+            20000
+          ],
+
+          headers: {
+            authorization:
+              `Bearer ${accessToken}`,
+
+            apikey:
+              config.SUPABASE_ANON_KEY
+          },
+
+          uploadDataDuringCreation: true,
+
+          removeFingerprintOnSuccess: true,
+
+          chunkSize:
+            6 * 1024 * 1024,
+
+          metadata: {
+
+            bucketName:
+              "portfolio-videos",
+
+            objectName:
+              path,
+
             contentType:
-              videoFile.type
+              videoFile.type ||
+              "video/mp4",
+
+            cacheControl:
+              "3600"
+          },
+
+          onError(error) {
+
+            console.error(
+              "TUS upload error:",
+              error
+            );
+
+            reject(error);
+          },
+
+          onProgress(
+            bytesUploaded,
+            bytesTotal
+          ) {
+
+            const percentage =
+              (
+                bytesUploaded /
+                bytesTotal
+              ) * 100;
+
+            status.textContent =
+              `Uploading video... ${percentage.toFixed(0)}%`;
+          },
+
+          onSuccess() {
+
+            status.textContent =
+              "Video uploaded ✓";
+
+            resolve();
           }
+
+        });
+
+      try {
+
+        const previousUploads =
+          await upload.findPreviousUploads();
+
+        if (
+          previousUploads &&
+          previousUploads.length > 0
+        ) {
+
+          upload.resumeFromPreviousUpload(
+            previousUploads[0]
+          );
+
+        }
+
+      } catch (resumeError) {
+
+        console.warn(
+          "Resume check skipped:",
+          resumeError
         );
-
-
-      if (error) {
-
-        throw error;
 
       }
 
+      upload.start();
 
-      const {
-        data
-      } = db.storage
+    });
+
+    // Get public video URL
+    const { data } =
+      db.storage
         .from("portfolio-videos")
         .getPublicUrl(path);
 
+    videoUrl =
+      data.publicUrl;
 
-      videoUrl =
-        data.publicUrl;
+    status.textContent =
+      "Video uploaded ✓";
 
+  } catch (error) {
 
-      status.textContent =
-        "Video uploaded ✓";
+    console.error(error);
 
+    status.textContent =
+      "Upload failed: " +
+      (error.message ||
+        "Unknown upload error");
 
-    } catch (error) {
-
-      console.error(error);
-
-      status.textContent =
-        "Upload failed: " +
-        error.message;
-
-      return;
-
-    }
-
+    return;
   }
-
+  }
 
   const project = {
 
